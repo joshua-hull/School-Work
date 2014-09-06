@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,17 +21,18 @@ int channels;                           // Number of channels in the image
 char *outImage;                         // File name of the output image
 std::vector<unsigned char> pixels;      // The actual pixels of the image
 bool canWrite;                          // Did we get an output name from the
-                                        // command line
+// command line
 
 /**
  * OpenGL drawing callback
  */
-void drawImage() {
+void drawImage()
+{
     //Reset position to origin
-    glRasterPos2i(0,0);
+    glRasterPos2i(0, 0);
 
     // Dump the pixels
-    if(channels == 3) glDrawPixels(width, height, GL_RGB, GL_UNSIGNED_BYTE, &pixels[0]);
+    if (channels == 3) glDrawPixels(width, height, GL_RGB, GL_UNSIGNED_BYTE, &pixels[0]);
     else glDrawPixels(width, height, GL_RGBA, GL_UNSIGNED_BYTE, &pixels[0]);
 
     // Flush to screen.
@@ -42,21 +43,23 @@ void drawImage() {
  * Write the image to the file system given the command line parameter.
  * @param outImage Output file image name.
  */
-void writeImage(char* outImage) {
+void writeImage(char *outImage)
+{
     // Flip the image from OpenGL's upside down version
-    std::vector<unsigned char>rightSideUp(width*height*3);
+    std::vector<unsigned char>rightSideUp(width * height * 3);
 
     for (int i = 0; i < height; i++)
         for (int j = 0; j < width; j++)
-            for (int k = 0; k < channels; k++) 
+            for (int k = 0; k < channels; k++)
                 rightSideUp[((height - 1 - i) * width * channels) + (j * channels) + k] = pixels[(i * width * channels) + (j * channels) + k];
 
     // Create output image
     ImageOutput *out = ImageOutput::create(outImage);
 
     // Error handeling
-    if(!out) {
-        printf("Error writing image: %s\n",geterror().c_str());
+    if (!out)
+    {
+        printf("Error writing image: %s\n", geterror().c_str());
         exit(EXIT_FAILURE);
     }
 
@@ -76,13 +79,15 @@ void writeImage(char* outImage) {
  * Read the image given on the command line from the disk.
  * @param inImage File name of the image to read in.
  */
-void readImage(char* inImage) {
+void readImage(char *inImage)
+{
     // Open image input
     ImageInput *in = ImageInput::open(inImage);
 
     // Error handeling
-    if(!in) {
-        printf("Error writing image: %s\n",geterror().c_str());
+    if (!in)
+    {
+        printf("Error writing image: %s\n", geterror().c_str());
         exit(EXIT_FAILURE);
     }
 
@@ -95,10 +100,10 @@ void readImage(char* inImage) {
     channels = spec.nchannels;
 
     // Create working copy of the pixels
-    std::vector<unsigned char>upsideDown(width*height*channels);
+    std::vector<unsigned char>upsideDown(width * height * channels);
 
     // Init the global copy of the pixels
-    pixels = std::vector<unsigned char>(width*height*channels);
+    pixels = std::vector<unsigned char>(width * height * channels);
 
     // Read in the pixels and close the file
     in->read_image(TypeDesc::UINT8, &upsideDown[0]);
@@ -118,20 +123,22 @@ void readImage(char* inImage) {
  * @param x   keyboard pos.
  * @param y   keyboard pos.
  */
-void handleKey(unsigned char key, int x, int y) {        
-    switch(key){
-        //Gracefully exit the program
-        case 'q':       
-        case 'Q':
-        case 27:                    // ESC
-            exit(EXIT_SUCCESS);
-                  
-        //Write the image file out
-        case 'w':
-        case 'W':
-            if(canWrite) writeImage(outImage);        
-        default:
-            return;
+void handleKey(unsigned char key, int x, int y)
+{
+    switch (key)
+    {
+    //Gracefully exit the program
+    case 'q':
+    case 'Q':
+    case 27:                    // ESC
+        exit(EXIT_SUCCESS);
+
+    //Write the image file out
+    case 'w':
+    case 'W':
+        if (canWrite) writeImage(outImage);
+    default:
+        return;
     }
 }
 
@@ -142,13 +149,14 @@ void handleKey(unsigned char key, int x, int y) {
  * @param x     x pos.
  * @param y     y pos.
  */
-void handleMouse(int btn, int state, int x, int y) {
+void handleMouse(int btn, int state, int x, int y)
+{
     // Pixel at the location we clicked
     unsigned char *pix;
     pix = &pixels[((height - 1 - y) * width * channels) + (x * channels)];
 
     // Print out information
-    if (btn == GLUT_LEFT_BUTTON && state == GLUT_DOWN) printf("(x,y) = (%3d,%3d)\tRGB = (%3u, %3u, %3u) \n",x, y, pix[0], pix[1], pix[2]);  
+    if (btn == GLUT_LEFT_BUTTON && state == GLUT_DOWN) printf("(x,y) = (%3d,%3d)\tRGB = (%3u, %3u, %3u) \n", x, y, pix[0], pix[1], pix[2]);
 }
 
 /**
@@ -156,7 +164,8 @@ void handleMouse(int btn, int state, int x, int y) {
  * @param width  Window width
  * @param height Window height
  */
-void openGLSetup(int width, int height) {
+void openGLSetup(int width, int height)
+{
     // Window setup
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowSize(width, height);
@@ -166,25 +175,28 @@ void openGLSetup(int width, int height) {
     glutDisplayFunc(drawImage);
     glutKeyboardFunc(handleKey);
     glutMouseFunc(handleMouse);
-      
+
     // More window setup
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0, width, 0, height);
-               
+
     glClearColor(1, 1, 1, 1);
-               
+
 }
 
-int main (int argc, char** argv) {
+int main (int argc, char **argv)
+{
     // Parameter checking and assignment
-    if (argc != 3 && argc != 2) {
-        printf("Usage: %s input_image [output_image]\n",argv[0]);
+    if (argc != 3 && argc != 2)
+    {
+        printf("Usage: %s input_image [output_image]\n", argv[0]);
         return EXIT_FAILURE;
     }
-    
+
     // Image ouput setup
-    if (argc == 3) {
+    if (argc == 3)
+    {
         outImage = argv[2];
         canWrite = true;
     }
