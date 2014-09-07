@@ -1,0 +1,25 @@
+Joshua Hull (jhull@clemson.edu)
+CPSC 4040-001 Fall 2014 Lab 1
+ 
+Usage: oiioview input_image [output_image]
+
+ABSTRACT
+Display an image given on the command line to an OpenGL window and write to
+an optional output file given from the command line. Also allow the user to
+click on the image in order to display the pixel information about the
+location they clicked on via the terminal.
+
+PARAMATERS
+* input_image: The image to load into the OpenGL window. Required.
+* output_image: The image name to write to disk. Optional. If not given then no
+image will be written on pressing 'w'.
+
+INTERACTION
+* Press 'q', 'Q', or ESC to exit the program.
+* Press 'w' or 'W' to write the image to output_image. If no output_image is
+given then no image is written
+* Click anywhere on the image to display the pixel information to the terminal
+window in the format '(x,y) = (XXX,YYY)	RGB = (RRR, GGG, BBB)'.
+
+BUGS
+Resizing the OpenGL window results in undefined output to the command line.

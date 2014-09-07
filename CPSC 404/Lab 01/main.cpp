@@ -1,16 +1,23 @@
 /**
+ * Joshua Hull (jhull@clemson.edu)
+ * CPSC 4040-001 Fall 2014 Lab 1
  *
+ * Display an image given on the command line to an OpenGL window and write to
+ * an optional output file given from the command line. Also allow the user to
+ * click on the image in order to display the pixel information about the
+ * location they clicked on via the terminal.
+ *
+ * Usage: oiioview input_image [output_image]
  */
+
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <OpenImageIO/imageio.h>
 #ifdef __APPLE__
 #  include <GLUT/glut.h>
 #else
 #  include <GL/glut.h>
 #endif
-
-#include <OpenImageIO/imageio.h>
 
 OIIO_NAMESPACE_USING
 
@@ -20,8 +27,7 @@ int height;                             // Image height
 int channels;                           // Number of channels in the image
 char *outImage;                         // File name of the output image
 std::vector<unsigned char> pixels;      // The actual pixels of the image
-bool canWrite;                          // Did we get an output name from the
-// command line
+bool canWrite;                          // Did we get an output name from the command line?
 
 /**
  * OpenGL drawing callback
@@ -87,7 +93,7 @@ void readImage(char *inImage)
     // Error handeling
     if (!in)
     {
-        printf("Error writing image: %s\n", geterror().c_str());
+        printf("Error reading image: %s\n", geterror().c_str());
         exit(EXIT_FAILURE);
     }
 
