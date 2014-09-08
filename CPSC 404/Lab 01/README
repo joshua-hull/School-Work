@@ -9,6 +9,9 @@ an optional output file given from the command line. Also allow the user to
 click on the image in order to display the pixel information about the
 location they clicked on via the terminal.
 
+COMPILING
+Simply type 'make' from the root directory.
+
 PARAMATERS
 * input_image: The image to load into the OpenGL window. Required.
 * output_image: The image name to write to disk. Optional. If not given then no
@@ -22,4 +25,5 @@ given then no image is written
 window in the format '(x,y) = (XXX,YYY)	RGB = (RRR, GGG, BBB)'.
 
 BUGS
-Resizing the OpenGL window results in undefined output to the command line.
+Resizing the OpenGL window results in undefined output to the command line when
+the user presses 'W' or 'w'.
