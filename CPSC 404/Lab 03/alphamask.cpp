@@ -35,7 +35,7 @@ void readImage(char *inputPath){
 
 	// Init the global copy of the pixels
 	// Read in the pixels and close the file
-	oiioPixels.resize(width*height*channels);
+	oiioPixels.resize(width*height*channels*sizeof(float));
 	in->read_image(TypeDesc::FLOAT, &oiioPixels[0]);
 	in->close();
 	delete in;
@@ -58,21 +58,17 @@ void readImage(char *inputPath){
 	    }
 }
 
-void processImage(){
-
-}
-
 void writeImage(char *outImage){
 
 	// Transfer to something OpenImageIO understands
-	oiioPixels.resize(width*height*4);
+	oiioPixels.resize(width*height*4*sizeof(float));
 
 	for (int row = 0; row < height; row++)
 	    for (int col = 0; col < width; col++){
-	    	oiioPixels[(row*width+col)*channels + 0] = pixels[row][col].r;
-	    	oiioPixels[(row*width+col)*channels + 1] = pixels[row][col].g;
-	    	oiioPixels[(row*width+col)*channels + 2] = pixels[row][col].b;
-	    	oiioPixels[(row*width+col)*channels + 3] = pixels[row][col].a;
+	    	oiioPixels[(row*width+col)*4 + 0] = pixels[row][col].r;
+	    	oiioPixels[(row*width+col)*4 + 1] = pixels[row][col].g;
+	    	oiioPixels[(row*width+col)*4 + 2] = pixels[row][col].b;
+	    	oiioPixels[(row*width+col)*4 + 3] = pixels[row][col].a;
 	    }
 
 	// Create output image
@@ -86,7 +82,7 @@ void writeImage(char *outImage){
     }
 
     // Create output image spec
-    ImageSpec spec (width, height, channels, TypeDesc::UINT8);
+    ImageSpec spec (width, height, 4, TypeDesc::FLOAT);
 
     // Open output image file
     out->open(outImage, spec);
@@ -95,6 +91,53 @@ void writeImage(char *outImage){
     out->write_image(TypeDesc::FLOAT, &oiioPixels[0]);
     out->close();
     delete out;
+}
+
+// Copied from assignment handout
+#define maximum(x, y, z) ((x) > (y)? ((x) > (z)? (x) : (z)) : ((y) > (z)? (y) : (z)))
+#define minimum(x, y, z) ((x) < (y)? ((x) < (z)? (x) : (z)) : ((y) < (z)? (y) : (z)))
+void RGBtoHSV(int r, int g, int b, double &h, double &s, double &v){
+	double red, green, blue;
+	double max, min, delta;
+	red = r / 255.0; green = g / 255.0; blue = b / 255.0; /* r , g, b to 0 − 1 scale */
+	max = maximum(red, green, blue);
+	min = minimum(red, green, blue);
+	v = max; /* value i s maximum of r , g, b */
+	if (max == 0) { /* saturation and hue 0 if value is 0 */
+		s = 0;
+		h = 0;
+	} else {
+		s = (max - min) / max; /* saturation i s colo r pu ri ty on scale 0 − 1 */
+		delta = max - min;
+		if (delta == 0) { /* hue doesn ’ t matter i f saturation i s 0 */
+			h = 0;
+		} else {
+			if (red == max) { /* otherwise , determine hue on scale 0 − 360 */
+				h = (green - blue) / delta;
+			} else if (green == max) {
+				h = 2.0 + (blue - red) / delta;
+			} else {/* ( blue == max) */
+				h = 4.0 + (red - green) / delta;
+			}
+			h = h * 60.0;
+			if(h < 0) {
+				h = h + 360.0;
+			}
+		}
+	}
+}
+
+void processImage(){
+	for (int row = 0; row < height; row++)
+	    for (int col = 0; col < width; col++){
+	    	double h;
+	    	double s;
+	    	double v;
+	    	RGBtoHSV((int)(pixels[row][col].r*255),(int)(pixels[row][col].g*255),(int)(pixels[row][col].b*255), h, s, v);
+	    	if(h > 95.0 && h < 145.0) {
+	    		pixels[row][col].a = 0.0;
+	    	}
+	    }
 }
 
 int main(int argc, char** argv){
