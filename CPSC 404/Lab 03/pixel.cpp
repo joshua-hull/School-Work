@@ -7,7 +7,6 @@
 
 #include "pixel.h"
 
-
 float& rgba_pixel::operator[] (const unsigned int index) {
    if (index == 0) {
       return r;

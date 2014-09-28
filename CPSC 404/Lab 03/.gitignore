@@ -98,3 +98,6 @@ Session.vim
 #sftp configuration file
 sftp-config.json
 
+### Project executables ###
+alphamask
+composite
