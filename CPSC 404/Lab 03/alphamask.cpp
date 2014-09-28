@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <stdio.h>
+#include <fstream>
 #include <vector>
 #include <OpenImageIO/imageio.h>
 #include "pixel.h"
@@ -12,6 +13,14 @@ int height;                             // Image height
 int channels;                           // Number of channels in the image
 rgba_pixel** pixels;      				// The actual pixels of the image
 static std::vector<float> oiioPixels;	// OpeImageIO copy of the pixels
+
+// Parameters for adjusting the masking. Set in processParameters
+float minHue;
+float maxHue;
+float minSaturation;
+float maxSaturation;
+float minValue;
+float maxValue;
 
 void readImage(char *inputPath){
 
@@ -134,10 +143,21 @@ void processImage(){
 	    	double s;
 	    	double v;
 	    	RGBtoHSV((int)(pixels[row][col].r*255),(int)(pixels[row][col].g*255),(int)(pixels[row][col].b*255), h, s, v);
-	    	if(h > 95.0 && h < 145.0) {
+	    	if(h > minHue && h < maxHue) {
 	    		pixels[row][col].a = 0.0;
 	    	}
 	    }
+}
+
+void processParameters(){
+	std::ifstream parametersFile;
+  	parametersFile.open("parameters.txt");
+  	if (parametersFile.is_open()){
+  		parametersFile >> minHue >> maxHue >> minSaturation >> maxSaturation >> minValue >> maxValue;
+  	} else {
+  		std::cout << "ERROR opening parameters file" << std::endl;
+  		exit(1);
+  	}
 }
 
 int main(int argc, char** argv){
@@ -147,6 +167,7 @@ int main(int argc, char** argv){
     }
     
     readImage(argv[1]);
+    processParameters();
     processImage();
     writeImage(argv[2]);
 
