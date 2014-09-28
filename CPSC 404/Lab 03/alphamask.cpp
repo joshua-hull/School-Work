@@ -11,7 +11,7 @@ int width;                              // Image width
 int height;                             // Image height
 int channels;                           // Number of channels in the image
 rgba_pixel** pixels;      				// The actual pixels of the image
-static std::vector<float> oiioPixels;		// OpeImageIO copy of the pixels
+static std::vector<float> oiioPixels;	// OpeImageIO copy of the pixels
 
 void readImage(char *inputPath){
 
@@ -141,8 +141,7 @@ void processImage(){
 }
 
 int main(int argc, char** argv){
-	if (argc != 3)
-    {
+	if (argc != 3){
         printf("Usage: %s input_image output_image\n", argv[0]);
         return 1;
     }
