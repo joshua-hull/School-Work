@@ -1,0 +1,37 @@
+Joshua Hull (jhull@clemson.edu)
+CPSC 4040-001 Fall 2014 Lab 3
+ 
+Usage: 
+alphamask input_image output_image
+composite foreground_image background_image [composited_image]
+
+ABSTRACT
+Generate an alphamask from a greenscreen image and composite it onto a
+background image. Example image in composited.png created with given
+parameters.txt
+
+COMPILING
+Simply type 'make' from the root directory. Compiles both alphamask and
+composite.
+
+PARAMATERS
+* input_image: The greenscreen image who's alpha mask we are computing.
+Required.
+* output_image: input_image with it's alpha mask computed. Required.
+* foreground_image: Four channel foreground image. output_image from alphamask.
+Required.
+* background_image: Three or four channel background image. Required.
+* composited_image: Filename where composited image can be written to. Optional.
+
+parameters.txt stores the parameters for composite. They are minHue, MaxHue,
+minValue, maxValue, minSaturation, maxSaturation. They are in that order, each
+on a new line. Sample provided.
+
+INTERACTION
+* Press 'q', 'Q', or ESC to exit the program.
+* Press 'w' or 'W' to write the image to composited_image. If no
+composited_image is given then no image is written.
+
+BUGS
+Currently only computes binary alpha mask with alpha = 0.0 when hue is between
+minHue and maxHue. All other parameters in parameters.txt are ignored.

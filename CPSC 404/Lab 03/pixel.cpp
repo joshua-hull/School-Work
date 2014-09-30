@@ -7,6 +7,13 @@
 
 #include "pixel.h"
 
+/**
+ * @brief Array operator.
+ * @details Array operator.
+ * 
+ * @param int Array index.
+ * @return Pointer to index.
+ */
 float& rgba_pixel::operator[] (const unsigned int index) {
    if (index == 0) {
       return r;

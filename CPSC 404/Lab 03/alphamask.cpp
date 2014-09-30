@@ -1,3 +1,12 @@
+/**
+ * Joshua Hull (jhull@clemson.edu)
+ * CPSC 4040-001 Fall 2014 Lab 3
+ *
+ * Calcualte the alpha mask of a greenscreen image.
+ *
+ * usage: alphamask input_image output_image
+ */
+
 #include <cstdlib>
 #include <stdio.h>
 #include <fstream>
@@ -22,6 +31,12 @@ float maxSaturation;
 float minValue;
 float maxValue;
 
+/**
+ * @brief Read image.
+ * @details Read image into program.
+ * 
+ * @param inputPath File path to read from.
+ */
 void readImage(char *inputPath){
 
 	// Open image input
@@ -67,6 +82,12 @@ void readImage(char *inputPath){
 	    }
 }
 
+/**
+ * @brief Write file.
+ * @details Write image file to the file system.
+ * 
+ * @param outImage File path to write to.
+ */
 void writeImage(char *outImage){
 
 	// Transfer to something OpenImageIO understands
@@ -136,6 +157,10 @@ void RGBtoHSV(int r, int g, int b, double &h, double &s, double &v){
 	}
 }
 
+/**
+ * @brief Process image.
+ * @details Calulate the alphamask for the image read in.
+ */
 void processImage(){
 	for (int row = 0; row < height; row++)
 	    for (int col = 0; col < width; col++){
@@ -143,12 +168,17 @@ void processImage(){
 	    	double s;
 	    	double v;
 	    	RGBtoHSV((int)(pixels[row][col].r*255),(int)(pixels[row][col].g*255),(int)(pixels[row][col].b*255), h, s, v);
+
 	    	if(h > minHue && h < maxHue) {
 	    		pixels[row][col].a = 0.0;
 	    	}
 	    }
 }
 
+/**
+ * @brief Process parameters
+ * @details Process the parameters from the paramaters file.
+ */
 void processParameters(){
 	std::ifstream parametersFile;
   	parametersFile.open("parameters.txt");

@@ -1,3 +1,11 @@
+/**
+ * Joshua Hull (jhull@clemson.edu)
+ * CPSC 4040-001 Fall 2014 Lab 3
+ *
+ * Calcualte the alpha mask of a greenscreen image.
+ *
+ * usage: alphamask input_image output_image
+ */
 #include <cstdlib>
 #include <stdio.h>
 #include <vector>
@@ -30,6 +38,13 @@ rgba_pixel** pixels_composited;						// Compositied pixels
 char *outImage;
 bool canWrite;
 
+/**
+ * @brief Read in images
+ * @details Read foregournd and background images into program.
+ * 
+ * @param foreground Foreground image file path.
+ * @param background Background image file path.
+ */
 void readImage(char *foreground, char* background){
 
 	// Foreground Image
@@ -129,6 +144,15 @@ void readImage(char *foreground, char* background){
 	    }
 }
 
+/**
+ * @brief Calculate composite.
+ * @details Calcualte the composite A Over B.
+ * 
+ * @param A Foreground pixel.
+ * @param B Background pixel.
+ * 
+ * @return Composited pixel.
+ */
 rgba_pixel AOverB(rgba_pixel A, rgba_pixel B){
 	rgba_pixel retVal;
 
@@ -148,6 +172,10 @@ rgba_pixel AOverB(rgba_pixel A, rgba_pixel B){
 	return retVal;
 }
 
+/**
+ * @brief Compostite images.
+ * @details Composite the images together.
+ */
 void compositeImages(){
 	// Initalize 2d array
 	pixels_composited = new rgba_pixel*[height_background];
@@ -162,6 +190,10 @@ void compositeImages(){
 	    }
 }
 
+/**
+ * @brief Write imgage.
+ * @details Write compostied image to the file system.
+ */
 void writeImage(){
 
 	// Transfer to something OpenImageIO understands
@@ -222,6 +254,10 @@ void handleKey(unsigned char key, int x, int y)
     }
 }
 
+/**
+ * @brief Draw composited image.
+ * @details Draw composited image using OpenGL.
+ */
 void drawImage(){
 	//Reset position to origin
     glRasterPos2i(0, 0);
@@ -258,6 +294,10 @@ void openGLSetup(int width, int height)
 
 }
 
+/**
+ * @brief Flip OpenGL.
+ * @details Flip pixels for transfering to/from OpenGL.
+ */
 void openGLFlip(){
 	openGLPixels.resize(width_background*height_background*4*sizeof(float));
 	for (int row = 0; row < height_background; row++)
