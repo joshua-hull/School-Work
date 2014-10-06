@@ -26,6 +26,8 @@ static std::vector<float> openGLPixels;		// OpenGL copy of the pixels
 
 std::vector<std::vector <float> > filter;	// 2d vecrtor representing the filter
 
+char *inImage;								// Input image name used for reset
+
 /**
  * @brief Read in images
  * @details Read foregournd and background images into program.
@@ -118,8 +120,9 @@ void writeImage(){
     delete out;
 }
 
-void reset(){
-
+inline int modulo(int a, int b) {
+  	const int result = a % b;
+ 	return result >= 0 ? result : result + b;
 }
 
 void convolution(){
@@ -139,6 +142,21 @@ void drawImage(){
 
     // Flush to screen.
     glFlush();
+}
+
+/**
+ * @brief Flip OpenGL.
+ * @details Flip pixels for transfering to/from OpenGL.
+ */
+void openGLFlip(){
+	openGLPixels.resize(width*height*4*sizeof(float));
+	for (int row = 0; row < height; row++)
+	    for (int col = 0; col < width; col++){
+	    	openGLPixels[((height - 1 - row)*width+col)*4 + 0] = pixels[row][col].r;
+	    	openGLPixels[((height - 1 - row)*width+col)*4 + 1] = pixels[row][col].g;
+	    	openGLPixels[((height - 1 - row)*width+col)*4 + 2] = pixels[row][col].b;
+	    	openGLPixels[((height - 1 - row)*width+col)*4 + 3] = pixels[row][col].a;
+	    }
 }
 
 /**
@@ -165,7 +183,8 @@ void handleKey(unsigned char key, int x, int y)
     //Readload original image
     case 'r':
     case 'R':
-    	reset();
+    	readImage(inImage);
+    	openGLFlip();
 
     //Convolve the image
     case 'c':
@@ -201,22 +220,6 @@ void openGLSetup(int width, int height)
 
 }
 
-
-/**
- * @brief Flip OpenGL.
- * @details Flip pixels for transfering to/from OpenGL.
- */
-void openGLFlip(){
-	openGLPixels.resize(width*height*4*sizeof(float));
-	for (int row = 0; row < height; row++)
-	    for (int col = 0; col < width; col++){
-	    	openGLPixels[((height - 1 - row)*width+col)*4 + 0] = pixels[row][col].r;
-	    	openGLPixels[((height - 1 - row)*width+col)*4 + 1] = pixels[row][col].g;
-	    	openGLPixels[((height - 1 - row)*width+col)*4 + 2] = pixels[row][col].b;
-	    	openGLPixels[((height - 1 - row)*width+col)*4 + 3] = pixels[row][col].a;
-	    }
-}
-
 void readFilter(char* file) {
 	// Open the filter file
 	std::ifstream input(file);
@@ -248,6 +251,8 @@ int main(int argc, char** argv){
         printf("Usage: %s filter_file input_image [output_image]\n", argv[0]);
         return 1;
     }
+
+    inImage = argv[2];
 
     if(argc == 4) {
     	outImage = argv[3];
