@@ -17,6 +17,7 @@ int width;			    					// Image width
 int height;				            		// Image height
 int channels;			            		// Number of channels in the image
 rgba_pixel** pixels;     					// The actual pixels of the image
+rgba_pixel** convolution;					// Convolution working copy of the pixels
 
 char *outImage;								// File name for the output image
 bool canWrite;								// Is there an ouput image name present
@@ -127,6 +128,40 @@ inline int modulo(int a, int b) {
 
 void convolution(){
 
+	convolution = new rgba_pixel*[height];
+   	convolution[0] = new rgba_pixel[width*height];
+
+   	for (int i=1; i<height; i++) {
+    	convolution[i] = convolution[i-1] + width;
+   	}
+
+   	for(int row = 0; row < height; row++)
+   		for(int col = 0; col < width; col++){
+   			rgba_pixel pixel;
+   			pixel.r = 0.0;
+   			pixel.g = 0.0;
+   			pixel.b = 0.0;
+   			pixel.a = 0.0;
+
+   			float sum = 0.0;
+   			int radius = (int)filter[0].size()/2;
+
+   			for(int i = -radius; i <= radius; i++)
+   				for(int j = -radius; j <= radius; j++){
+   					pixel.r += pixels[row + i][col + j].r*filter[i + radius][j + radius];
+   					pixel.g += pixels[row + i][col + j].g*filter[i + radius][j + radius];
+   					pixel.b += pixels[row + i][col + j].b*filter[i + radius][j + radius];
+   					pixel.a += pixels[row + i][col + j].a*filter[i + radius][j + radius];
+
+   					sum += filter[i + radius][j + radius];
+   				}
+   			pixel.r /= sum;
+   			pixel.g /= sum;
+   			pixel.b /= sum;
+   			pixel.a /= sum;
+
+   			convolution[row][col] = pixel;
+   		}
 }
 
 /**
