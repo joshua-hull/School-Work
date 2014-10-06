@@ -1,37 +1,26 @@
 Joshua Hull (jhull@clemson.edu)
-CPSC 4040-001 Fall 2014 Lab 3
+CPSC 4040-001 Fall 2014 Lab 4
  
-Usage: 
-alphamask input_image output_image
-composite foreground_image background_image [composited_image]
+USAGE
+filt filter_file input_image [output_image]
 
 ABSTRACT
-Generate an alphamask from a greenscreen image and composite it onto a
-background image. Example image in composited.png created with given
-parameters.txt
+Filter an input image with the given filter via convolution, optionally writting
+it to an outout image. Uses tiling to handle the boundry cases.
 
 COMPILING
-Simply type 'make' from the root directory. Compiles both alphamask and
-composite.
+Simply type 'make' from the root directory.
 
 PARAMATERS
-* input_image: The greenscreen image who's alpha mask we are computing.
-Required.
-* output_image: input_image with it's alpha mask computed. Required.
-* foreground_image: Four channel foreground image. output_image from alphamask.
-Required.
-* background_image: Three or four channel background image. Required.
-* composited_image: Filename where composited image can be written to. Optional.
-
-parameters.txt stores the parameters for composite. They are minHue, MaxHue,
-minValue, maxValue, minSaturation, maxSaturation. They are in that order, each
-on a new line. Sample provided.
+* filter_file: Filter to apply to the image. Required.
+* input_image: The image we are going to filter. Required.
+* output_image: The name of the image to write to. Optional.
 
 INTERACTION
 * Press 'q', 'Q', or ESC to exit the program.
-* Press 'w' or 'W' to write the image to composited_image. If no
-composited_image is given then no image is written.
+* Press 'w' or 'W' to write the image to output_image. If no output_image is
+given then no image is written.
+* Press 'c' or 'C' to apply the filter. Press repeatedly to reapply the filter.
+* Press 'r' or 'R' to reset to the original input_image.
 
 BUGS
-Currently only computes binary alpha mask with alpha = 0.0 when hue is between
-minHue and maxHue. All other parameters in parameters.txt are ignored.

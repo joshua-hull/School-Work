@@ -1,3 +1,12 @@
+/**
+ * Joshua Hull (jhull@clemson.edu)
+ * CPSC 4040-001 Fall 2014 Lab 4
+ *
+ * Filter a given input image with a given filter using the convolution method.
+ *
+ * usage: filt filter_file input_image [output_image]
+ */
+
 #include <cstdlib>
 #include <stdio.h>
 #include <fstream>
@@ -165,6 +174,7 @@ void convolutionFilter() {
         float posSum = 0.0;
         int radius = (int)filter[0].size()/2;
 
+        // Calculate the convolution using the tiling method for the boundry.
         for(int i = -radius; i <= radius; i++)
            for(int j = -radius; j <= radius; j++){
               pixel.r += pixels[modulo(row + i,height)][modulo(col + j,width)].r*filter[i + radius][j + radius];
@@ -183,6 +193,7 @@ void convolutionFilter() {
           convolution[row][col] = pixel;
       }
 
+      // Copy the convolution over and redraw the image.
       for(int row = 0; row < height; row++)
           for(int col = 0; col < width; col++){
             pixels[row][col].r = convolution[row][col].r;
