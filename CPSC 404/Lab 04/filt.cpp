@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <OpenImageIO/imageio.h>
+#include <iostream>
 #include "pixel.h"
 #ifdef __APPLE__
 #  include <GLUT/glut.h>
@@ -36,75 +37,74 @@ char *inImage;								// Input image name used for reset
  * @param foreground Foreground image file path.
  * @param background Background image file path.
  */
-void readImage(char *image){
+void readImage(char *image) {
 
 	// Open image input
-	ImageInput *in = ImageInput::open(image);
+     ImageInput *in = ImageInput::open(image);
 
 	// Error handeling
-	if (!in)
-	{
-	    printf("Error reading image: %s\n", geterror().c_str());
-	    exit(EXIT_FAILURE);
-	}
+     if (!in)
+     {
+         printf("Error reading image: %s\n", geterror().c_str());
+         exit(EXIT_FAILURE);
+     }
 
 	// Get input spec
-	const ImageSpec &spec = in->spec();
+     const ImageSpec &spec = in->spec();
 
 	// Get image details
-	width = spec.width;
-	height = spec.height;
-	channels = spec.nchannels;
+     width = spec.width;
+     height = spec.height;
+     channels = spec.nchannels;
 
 	// Init the global copy of the pixels
 	// Read in the pixels and close the file
-	oiioPixels.resize(width*height*channels*sizeof(float));
-	in->read_image(TypeDesc::FLOAT, &oiioPixels[0]);
-	in->close();
-	delete in;
+     oiioPixels.resize(width*height*channels*sizeof(float));
+     in->read_image(TypeDesc::FLOAT, &oiioPixels[0]);
+     in->close();
+     delete in;
 
 	// Initalize 2d array
-	pixels = new rgba_pixel*[height];
-   	pixels[0] = new rgba_pixel[width*height];
+     pixels = new rgba_pixel*[height];
+     pixels[0] = new rgba_pixel[width*height];
 
-   	for (int i=1; i<height; i++) {
-    	pixels[i] = pixels[i-1] + width;
-   	}
+     for (int i=1; i<height; i++) {
+         pixels[i] = pixels[i-1] + width;
+     }
 
 	// Transfer into custom data structure
-	for (int row = 0; row < height; row++)
-	    for (int col = 0; col < width; col++){
-	    	pixels[row][col].r = oiioPixels[(row*width+col)*channels + 0];
-	    	pixels[row][col].g = oiioPixels[(row*width+col)*channels + 1];
-	    	pixels[row][col].b = oiioPixels[(row*width+col)*channels + 2];
-	    	if(channels == 4) pixels[row][col].a = oiioPixels[(row*width+col)*channels + 3];
-	    	else pixels[row][col].a = 1.0;
-	    }
-}
+     for (int row = 0; row < height; row++)
+         for (int col = 0; col < width; col++){
+          pixels[row][col].r = oiioPixels[(row*width+col)*channels + 0];
+          pixels[row][col].g = oiioPixels[(row*width+col)*channels + 1];
+          pixels[row][col].b = oiioPixels[(row*width+col)*channels + 2];
+          if(channels == 4) pixels[row][col].a = oiioPixels[(row*width+col)*channels + 3];
+          else pixels[row][col].a = 1.0;
+      }
+  }
 
 /**
  * @brief Write imgage.
  * @details Write compostied image to the file system.
  */
-void writeImage(){
+void writeImage() {
 
 	// Transfer to something OpenImageIO understands
-	oiioPixels.resize(width*height*4*sizeof(float));
+     oiioPixels.resize(width*height*4*sizeof(float));
 
-	for (int row = 0; row < height; row++)
-	    for (int col = 0; col < width; col++){
-	    	oiioPixels[(row*width+col)*4 + 0] = pixels[row][col].r;
-	    	oiioPixels[(row*width+col)*4 + 1] = pixels[row][col].g;
-	    	oiioPixels[(row*width+col)*4 + 2] = pixels[row][col].b;
-	    	oiioPixels[(row*width+col)*4 + 3] = pixels[row][col].a;
-	    }
+     for (int row = 0; row < height; row++)
+         for (int col = 0; col < width; col++){
+          oiioPixels[(row*width+col)*4 + 0] = pixels[row][col].r;
+          oiioPixels[(row*width+col)*4 + 1] = pixels[row][col].g;
+          oiioPixels[(row*width+col)*4 + 2] = pixels[row][col].b;
+          oiioPixels[(row*width+col)*4 + 3] = pixels[row][col].a;
+        }
 
 	// Create output image
     ImageOutput *out = ImageOutput::create(outImage);
 
     // Error handeling
-    if (!out)
-    {
+    if (!out) {
         printf("Error writing image: %s\n", geterror().c_str());
         exit(EXIT_FAILURE);
     }
@@ -121,77 +121,93 @@ void writeImage(){
     delete out;
 }
 
-inline int modulo(int a, int b) {
-  	const int result = a % b;
- 	return result >= 0 ? result : result + b;
+/**
+ * @brief Flip OpenGL.
+ * @details Flip pixels for transfering to/from OpenGL.
+ */
+void openGLFlip() {
+    openGLPixels.resize(width*height*4*sizeof(float));
+    for (int row = 0; row < height; row++)
+      for (int col = 0; col < width; col++){
+        openGLPixels[((height - 1 - row)*width+col)*4 + 0] = pixels[row][col].r;
+        openGLPixels[((height - 1 - row)*width+col)*4 + 1] = pixels[row][col].g;
+        openGLPixels[((height - 1 - row)*width+col)*4 + 2] = pixels[row][col].b;
+        openGLPixels[((height - 1 - row)*width+col)*4 + 3] = pixels[row][col].a;
+    }
 }
 
-void convolution(){
+inline int modulo(int a, int b) {
+  const int result = a % b;
+  return result >= 0 ? result : result + b;
+}
 
-	convolution = new rgba_pixel*[height];
-   	convolution[0] = new rgba_pixel[width*height];
+/**
+ * @brief Convolute
+ * @details Convolute inout image with filter
+ */
+void convolutionFilter() {
+    convolution = new rgba_pixel*[height];
+    convolution[0] = new rgba_pixel[width*height];
 
-   	for (int i=1; i<height; i++) {
-    	convolution[i] = convolution[i-1] + width;
-   	}
+    for (int i=1; i<height; i++) {
+       convolution[i] = convolution[i-1] + width;
+    }
 
-   	for(int row = 0; row < height; row++)
-   		for(int col = 0; col < width; col++){
-   			rgba_pixel pixel;
-   			pixel.r = 0.0;
-   			pixel.g = 0.0;
-   			pixel.b = 0.0;
-   			pixel.a = 0.0;
+   for(int row = 0; row < height; row++)
+     for(int col = 0; col < width; col++){
+        rgba_pixel pixel;
+        pixel.r = 0.0;
+        pixel.g = 0.0;
+        pixel.b = 0.0;
+        pixel.a = 0.0;
 
-   			float sum = 0.0;
-   			int radius = (int)filter[0].size()/2;
+        float negSum = 0.0;
+        float posSum = 0.0;
+        int radius = (int)filter[0].size()/2;
 
-   			for(int i = -radius; i <= radius; i++)
-   				for(int j = -radius; j <= radius; j++){
-   					pixel.r += pixels[row + i][col + j].r*filter[i + radius][j + radius];
-   					pixel.g += pixels[row + i][col + j].g*filter[i + radius][j + radius];
-   					pixel.b += pixels[row + i][col + j].b*filter[i + radius][j + radius];
-   					pixel.a += pixels[row + i][col + j].a*filter[i + radius][j + radius];
+        for(int i = -radius; i <= radius; i++)
+           for(int j = -radius; j <= radius; j++){
+              pixel.r += pixels[modulo(row + i,height)][modulo(col + j,width)].r*filter[i + radius][j + radius];
+              pixel.g += pixels[modulo(row + i,height)][modulo(col + j,width)].g*filter[i + radius][j + radius];
+              pixel.b += pixels[modulo(row + i,height)][modulo(col + j,width)].b*filter[i + radius][j + radius];
+              pixel.a += pixels[modulo(row + i,height)][modulo(col + j,width)].a*filter[i + radius][j + radius];
 
-   					sum += filter[i + radius][j + radius];
-   				}
-   			pixel.r /= sum;
-   			pixel.g /= sum;
-   			pixel.b /= sum;
-   			pixel.a /= sum;
+              if(filter[i + radius][j + radius] > 0) posSum += filter[i + radius][j + radius];
+              else negSum += abs(filter[i + radius][j + radius]);
+          }
+          pixel.r /= fmax(negSum,posSum);
+          pixel.g /= fmax(negSum,posSum);
+          pixel.b /= fmax(negSum,posSum);
+          pixel.a /= fmax(negSum,posSum);
 
-   			convolution[row][col] = pixel;
-   		}
+          convolution[row][col] = pixel;
+      }
+
+      for(int row = 0; row < height; row++)
+          for(int col = 0; col < width; col++){
+            pixels[row][col].r = convolution[row][col].r;
+            pixels[row][col].b = convolution[row][col].b;
+            pixels[row][col].g = convolution[row][col].g;
+            pixels[row][col].a = convolution[row][col].a;
+        }
+
+    openGLFlip();
+    glutPostRedisplay();
 }
 
 /**
  * @brief Draw composited image.
  * @details Draw composited image using OpenGL.
  */
-void drawImage(){
+void drawImage() {
 	//Reset position to origin
     glRasterPos2i(0, 0);
 
     // Dump the pixels
-	glDrawPixels(width, height, GL_RGBA, GL_FLOAT, &openGLPixels[0]);
+    glDrawPixels(width, height, GL_RGBA, GL_FLOAT, &openGLPixels[0]);
 
     // Flush to screen.
     glFlush();
-}
-
-/**
- * @brief Flip OpenGL.
- * @details Flip pixels for transfering to/from OpenGL.
- */
-void openGLFlip(){
-	openGLPixels.resize(width*height*4*sizeof(float));
-	for (int row = 0; row < height; row++)
-	    for (int col = 0; col < width; col++){
-	    	openGLPixels[((height - 1 - row)*width+col)*4 + 0] = pixels[row][col].r;
-	    	openGLPixels[((height - 1 - row)*width+col)*4 + 1] = pixels[row][col].g;
-	    	openGLPixels[((height - 1 - row)*width+col)*4 + 2] = pixels[row][col].b;
-	    	openGLPixels[((height - 1 - row)*width+col)*4 + 3] = pixels[row][col].a;
-	    }
 }
 
 /**
@@ -200,33 +216,36 @@ void openGLFlip(){
  * @param x   keyboard pos.
  * @param y   keyboard pos.
  */
-void handleKey(unsigned char key, int x, int y)
-{
-    switch (key)
-    {
+void handleKey(unsigned char key, int x, int y) {
+    switch (key) {
     //Gracefully exit the program
-    case 'q':
-    case 'Q':
-    case 27:                    // ESC
-        exit(EXIT_SUCCESS);
+        case 'q':
+        case 'Q':
+        case 27:                    // ESC
+            exit(EXIT_SUCCESS);
 
-    //Write the image file out
-    case 'w':
-    case 'W':
-        if (canWrite) writeImage();
+        //Write the image file out
+        case 'w':
+        case 'W':
+            if (canWrite) writeImage();
+            return;
 
-    //Readload original image
-    case 'r':
-    case 'R':
-    	readImage(inImage);
-    	openGLFlip();
+        //Readload original image
+        case 'r':
+        case 'R':
+            readImage(inImage);
+            openGLFlip();
+            glutPostRedisplay();
+            return;
 
-    //Convolve the image
-    case 'c':
-    case 'C':
-    	convolution();
-    default:
-        return;
+        //Convolve the image
+        case 'c':
+        case 'C':
+            convolutionFilter();
+            return;
+
+        default:
+            return;
     }
 }
 
@@ -235,26 +254,31 @@ void handleKey(unsigned char key, int x, int y)
  * @param width  Window width
  * @param height Window height
  */
-void openGLSetup(int width, int height)
-{
-    // Window setup
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
-    glutInitWindowSize(width, height);
-    glutCreateWindow("filt - Joshua Hull (jhull@clemson.edu)");
+void openGLSetup(int width, int height) {
+  // Window setup
+  glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
+  glutInitWindowSize(width, height);
+  glutCreateWindow("filt - Joshua Hull (jhull@clemson.edu)");
 
-    // Callback setup
-    glutDisplayFunc(drawImage);
-    glutKeyboardFunc(handleKey);
+  // Callback setup
+  glutDisplayFunc(drawImage);
+  glutKeyboardFunc(handleKey);
 
-    // More window setup
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(0, width, 0, height);
+  // More window setup
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluOrtho2D(0, width, 0, height);
 
-    glClearColor(1, 1, 1, 1);
+  glClearColor(1, 1, 1, 1);
 
 }
 
+/**
+ * @brief Read filter
+ * @details Read filter in from file    
+ * 
+ * @param file Inout file name
+ */
 void readFilter(char* file) {
 	// Open the filter file
 	std::ifstream input(file);
@@ -278,11 +302,11 @@ void readFilter(char* file) {
 			input >> filter[i][j];
 
 	// Close the filter file
-	input.close();
+    input.close();
 }
 
 int main(int argc, char** argv){
-	if (argc != 3 && argc != 4){
+    if (argc != 3 && argc != 4){
         printf("Usage: %s filter_file input_image [output_image]\n", argv[0]);
         return 1;
     }
@@ -290,22 +314,22 @@ int main(int argc, char** argv){
     inImage = argv[2];
 
     if(argc == 4) {
-    	outImage = argv[3];
-    	canWrite = true;
-	}
+        outImage = argv[3];
+        canWrite = true;
+    }
 
     readImage(argv[2]);
     readFilter(argv[1]);
 
-	// Flip for openGL
-	openGLFlip();
+    // Flip for openGL
+    openGLFlip();
 
-	// Init OpenGL
+    // Init OpenGL
     glutInit(&argc, argv);
     openGLSetup(width, height);
 
     // Start running display window
     glutMainLoop();
 
-	return 0;
+    return 0;
 }
