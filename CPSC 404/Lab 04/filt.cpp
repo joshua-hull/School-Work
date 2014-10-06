@@ -13,16 +13,18 @@
 OIIO_NAMESPACE_USING
 
 // Global variables to keep things a little simpler
-int width;			    				// Image width
-int height;				            	// Image height
-int channels;			            	// Number of channels in the image
-rgba_pixel** pixels;     				// The actual pixels of the image
+int width;			    					// Image width
+int height;				            		// Image height
+int channels;			            		// Number of channels in the image
+rgba_pixel** pixels;     					// The actual pixels of the image
 
-char *outImage;							// File name for the output image
-bool canWrite;							// Is there an ouput image name present
+char *outImage;								// File name for the output image
+bool canWrite;								// Is there an ouput image name present
 
-static std::vector<float> oiioPixels;	// OpeImageIO copy of the pixels
-static std::vector<float> openGLPixels;	// OpenGL copy of the pixels
+static std::vector<float> oiioPixels;		// OpeImageIO copy of the pixels
+static std::vector<float> openGLPixels;		// OpenGL copy of the pixels
+
+std::vector<std::vector <float> > filter;	// 2d vecrtor representing the filter
 
 /**
  * @brief Read in images
@@ -215,6 +217,32 @@ void openGLFlip(){
 	    }
 }
 
+void readFilter(char* file) {
+	// Open the filter file
+	std::ifstream input(file);
+
+	// Error checking
+	if (input == NULL) {
+		printf("Error reading filter");
+		exit(1);
+	}
+	// Get the size of the filter
+	int count;
+	input >> count;
+
+	// Init 2d vector for the filter
+	std::vector<float> row(count,0);
+	filter = std::vector<std::vector<float> >(count,row);
+
+	// Read in the contents of the filter
+	for(int i = 0; i < count; i++)
+		for(int j = 0; j < count; j++)
+			input >> filter[i][j];
+
+	// Close the filter file
+	input.close();
+}
+
 int main(int argc, char** argv){
 	if (argc != 3 && argc != 4){
         printf("Usage: %s filter_file input_image [output_image]\n", argv[0]);
@@ -227,6 +255,7 @@ int main(int argc, char** argv){
 	}
 
     readImage(argv[2]);
+    readFilter(argv[1]);
 
 	// Flip for openGL
 	openGLFlip();
