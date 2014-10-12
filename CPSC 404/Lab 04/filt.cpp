@@ -308,8 +308,8 @@ void readFilter(char* file) {
 	filter = std::vector<std::vector<float> >(count,row);
 
 	// Read in the contents of the filter
-	for(int i = 0; i < count; i++)
-		for(int j = 0; j < count; j++)
+	for(int i = count-1; i >= 0; i--)
+		for(int j = count - 1; j >= 0; j--)
 			input >> filter[i][j];
 
 	// Close the filter file
