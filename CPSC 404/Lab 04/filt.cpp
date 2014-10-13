@@ -42,7 +42,7 @@ char *inImage;								// Input image name used for reset
 /**
  * @brief Read in images
  * @details Read foregournd and background images into program.
- * 
+ *
  * @param foreground Foreground image file path.
  * @param background Background image file path.
  */
@@ -168,7 +168,7 @@ void convolutionFilter() {
         pixel.r = 0.0;
         pixel.g = 0.0;
         pixel.b = 0.0;
-        pixel.a = 0.0;
+        pixel.a = 1.0;
 
         float negSum = 0.0;
         float posSum = 0.0;
@@ -180,7 +180,6 @@ void convolutionFilter() {
               pixel.r += pixels[modulo(row + i,height)][modulo(col + j,width)].r*filter[i + radius][j + radius];
               pixel.g += pixels[modulo(row + i,height)][modulo(col + j,width)].g*filter[i + radius][j + radius];
               pixel.b += pixels[modulo(row + i,height)][modulo(col + j,width)].b*filter[i + radius][j + radius];
-              pixel.a += pixels[modulo(row + i,height)][modulo(col + j,width)].a*filter[i + radius][j + radius];
 
               if(filter[i + radius][j + radius] > 0) posSum += filter[i + radius][j + radius];
               else negSum += abs(filter[i + radius][j + radius]);
@@ -188,7 +187,6 @@ void convolutionFilter() {
           pixel.r /= fmax(negSum,posSum);
           pixel.g /= fmax(negSum,posSum);
           pixel.b /= fmax(negSum,posSum);
-          pixel.a /= fmax(negSum,posSum);
 
           convolution[row][col] = pixel;
       }
@@ -286,8 +284,8 @@ void openGLSetup(int width, int height) {
 
 /**
  * @brief Read filter
- * @details Read filter in from file    
- * 
+ * @details Read filter in from file
+ *
  * @param file Inout file name
  */
 void readFilter(char* file) {

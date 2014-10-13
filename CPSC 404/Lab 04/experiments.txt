@@ -1,33 +1,7 @@
 Joshua Hull (jhull@clemson.edu)
 CPSC 4040-001 Fall 2014 Lab 4
 
-USAGE
-filt filter_file input_image [output_image]
-
-ABSTRACT
-Filter an input image with the given filter via convolution, optionally writing
-it to an output image. Uses tiling to handle the boundary cases.
-
-COMPILING
-Simply type 'make' from the root directory.
-
-PARAMATERS
-* filter_file: Filter to apply to the image. Required.
-* input_image: The image we are going to filter. Required.
-* output_image: The name of the image to write to. Optional.
-
-INTERACTION
-* Press 'q', 'Q', or ESC to exit the program.
-* Press 'w' or 'W' to write the image to output_image. If no output_image is
-given then no image is written.
-* Press 'c' or 'C' to apply the filter. Press repeatedly to reapply the filter.
-* Press 'r' or 'R' to reset to the original input_image.
-
-BUGS
-Program only handels RGB and RGBA images. Will add an alpha channel with full
-alpha to RGB images. Does not convolve the alpha channel.
-
-EXPERIMENTS
+Writeup
 1.) bell9.filt convolved with square.png resulted in a blurred image. Output to
  bell9.png.
 
@@ -60,5 +34,5 @@ EXPERIMENTS
  experiment2.filt is a filter that calculates the hyperbolic cosine of the sum
  of the indexes of the filter. So if the filter is an N by N filter then
  filter[i][j] = cosh((i+1)+(j+1)) for i in 0...N-1. The result is an image that
- is blurred and visibly shifted down and to the right. Results written to
+ is blurred and visibly shifted down and to the right. Results written to 
  experimant2.png
