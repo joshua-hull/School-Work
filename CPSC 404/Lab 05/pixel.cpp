@@ -10,7 +10,7 @@
 /**
  * @brief Array operator.
  * @details Array operator.
- * 
+ *
  * @param int Array index.
  * @return Pointer to index.
  */
@@ -27,4 +27,18 @@ float& rgba_pixel::operator[] (const unsigned int index) {
       std::cerr << "invalid index" << std::endl;
       exit(-2);
    }
+}
+
+/**
+ * Scales the RGB values of a pixel (not alpha though) by a scalar.
+ */
+rgba_pixel& rgba_pixel::operator* (const float scalar){
+  rgba_pixel *p = new rgba_pixel;
+
+  p->r = std::max(r * scalar, 255.0f);
+  p->g = std::max(g * scalar, 255.0f);
+  p->b = std::max(b * scalar, 255.0f);
+  p->a = a;
+
+  return *p;
 }

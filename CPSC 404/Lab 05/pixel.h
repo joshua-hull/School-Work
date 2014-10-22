@@ -7,11 +7,12 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <algorithm>
 
 /**
  * @brief RGBA pixel
  * @details RGBA pixel
- * 
+ *
  * @param int Array index.
  */
 class rgba_pixel {
@@ -22,4 +23,5 @@ class rgba_pixel {
       float a;
 
       float& operator[] (const unsigned int index);
+      rgba_pixel& operator* (const float scalar);
 };

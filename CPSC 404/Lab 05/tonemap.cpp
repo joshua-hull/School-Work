@@ -29,13 +29,16 @@ int width;
 int height;
 int channels;
 
-static std::vector<float> oiioPixels;		// OpeImageIO copy of the pixels
-static std::vector<float> openGLPixels;	// OpenGL copy of the pixels
-rgba_pixel** pixels;     					      // The actual pixels of the image
+static std::vector<float> oiioPixels;		   // OpeImageIO copy of the pixels
+static std::vector<float> openGLPixels;	   // Pixels being displayed by OpenGL
+rgba_pixel** toneMappedPixels;                 // Tone mapped image data.
+rgba_pixel** pixels;     					         // The actual pixels of the image
 
 char *outImage;								// File name for the output image
 bool canWrite;								// Is there an ouput image name present
 char *inImage;								// Input image name used for reset
+
+bool toneMapped;              // Are we displaying the tone mapped image?
 
 /**
  * @brief Read in images
@@ -97,10 +100,17 @@ void openGLFlip() {
     openGLPixels.resize(width*height*4*sizeof(float));
     for (int row = 0; row < height; row++)
       for (int col = 0; col < width; col++){
-        openGLPixels[((height - 1 - row)*width+col)*4 + 0] = pixels[row][col].r;
-        openGLPixels[((height - 1 - row)*width+col)*4 + 1] = pixels[row][col].g;
-        openGLPixels[((height - 1 - row)*width+col)*4 + 2] = pixels[row][col].b;
-        openGLPixels[((height - 1 - row)*width+col)*4 + 3] = pixels[row][col].a;
+        if(!toneMapped){
+          openGLPixels[((height - 1 - row)*width+col)*4 + 0] = pixels[row][col].r;
+          openGLPixels[((height - 1 - row)*width+col)*4 + 1] = pixels[row][col].g;
+          openGLPixels[((height - 1 - row)*width+col)*4 + 2] = pixels[row][col].b;
+          openGLPixels[((height - 1 - row)*width+col)*4 + 3] = pixels[row][col].a;
+        } else {
+          openGLPixels[((height - 1 - row)*width+col)*4 + 0] = toneMappedPixels[row][col].r;
+          openGLPixels[((height - 1 - row)*width+col)*4 + 1] = toneMappedPixels[row][col].g;
+          openGLPixels[((height - 1 - row)*width+col)*4 + 2] = toneMappedPixels[row][col].b;
+          openGLPixels[((height - 1 - row)*width+col)*4 + 3] = toneMappedPixels[row][col].a;
+        }
     }
 }
 
@@ -131,7 +141,13 @@ void handleKey(unsigned char key, int x, int y) {
         case 'q':
         case 'Q':
         case 27:                    // ESC
-            exit(EXIT_SUCCESS);
+          exit(EXIT_SUCCESS);
+
+        case's':
+        case 'S':
+          toneMapped = !toneMapped;
+          openGLFlip();
+          glutPostRedisplay();
 
         default:
             return;
@@ -157,6 +173,35 @@ void openGLSetup(int width, int height) {
 
 }
 
+void toneMapImage(){
+
+  // Initalize 2d array
+  toneMappedPixels = new rgba_pixel*[height];
+  toneMappedPixels[0] = new rgba_pixel[width*height];
+
+  for (int i=1; i<height; i++) {
+    toneMappedPixels[i] = toneMappedPixels[i-1] + width;
+  }
+
+  if(cOption) {
+    for(int row = 0; row < width; row++)
+      for(int col = 0; col < height; col++){
+        rgba_pixel p = pixels[row][col];
+        float l_w = (20*p.r + 40*p.g + p.b);
+        float tmp = log(l_w);
+        float tmp2 = gValue * tmp;
+        float l_d = exp(tmp2);
+
+        rgba_pixel tmpP = p * (l_d/l_w);
+
+        toneMappedPixels[row][col] = tmpP;
+      }
+  } else {
+
+  }
+
+}
+
 int main(int argc, char** argv){
   cOption = false;
   gOption = false;
@@ -176,14 +221,14 @@ int main(int argc, char** argv){
       case '?':
         if (optopt == 'g')
           printf("-g requires a gamma value.\n");
-          return 1;
+          return EXIT_FAILURE;
       default:
         break;
     }
 
     if(!(cOption^gOption)) {
       printf("Only -g gamma or -c can be specified, not both or neither.\n");
-      return 1;
+      return EXIT_FAILURE;
     }
 
     if(cOption){
@@ -205,6 +250,7 @@ int main(int argc, char** argv){
     }
 
     readImage(inImage);
+    toneMapImage();
 
     // Flip for openGL
     openGLFlip();
@@ -217,5 +263,5 @@ int main(int argc, char** argv){
     glutMainLoop();
 
 
-  return 0;
+  return EXIT_SUCCESS;
 }
