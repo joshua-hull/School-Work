@@ -8,12 +8,10 @@
 #include <cstdlib>
 #include <iostream>
 #include <algorithm>
+#include <iomanip>
 
 /**
- * @brief RGBA pixel
- * @details RGBA pixel
- *
- * @param int Array index.
+ * Generic RGBA pixel class.
  */
 class rgba_pixel {
    public:
@@ -23,5 +21,11 @@ class rgba_pixel {
       float a;
 
       float& operator[] (const unsigned int index);
-      rgba_pixel& operator* (const float scalar);
+
+      // Added by Joshua Hull (jhull@clemson.edu)
+      std::ostream& operator<<(std::ostream& os);
 };
+
+// Added by Joshua Hull (jhull@clemson.edu)
+rgba_pixel& operator* (rgba_pixel p, const float scalar);
+rgba_pixel& operator* (const float scalar, rgba_pixel p);

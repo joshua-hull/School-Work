@@ -158,7 +158,7 @@ void openGLSetup(int width, int height) {
   // Window setup
   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
   glutInitWindowSize(width, height);
-  glutCreateWindow("filt - Joshua Hull (jhull@clemson.edu)");
+  glutCreateWindow("tonemap - Joshua Hull (jhull@clemson.edu)");
 
   // Callback setup
   glutDisplayFunc(drawImage);
@@ -183,9 +183,9 @@ void toneMapImage(){
     toneMappedPixels[i] = toneMappedPixels[i-1] + width;
   }
 
-  if(cOption) {
-    for(int row = 0; row < width; row++)
-      for(int col = 0; col < height; col++){
+  if(gOption) {
+    for(int row = 0; row < height; row++)
+      for(int col = 0; col < width; col++){
         rgba_pixel p = pixels[row][col];
         float l_w = (20*p.r + 40*p.g + p.b);
         float tmp = log(l_w);
@@ -199,7 +199,6 @@ void toneMapImage(){
   } else {
 
   }
-
 }
 
 int main(int argc, char** argv){

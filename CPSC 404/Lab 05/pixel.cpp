@@ -30,15 +30,30 @@ float& rgba_pixel::operator[] (const unsigned int index) {
 }
 
 /**
+ * Added by Joshua Hull (jhull@clemson.edu)
+ */
+
+/**
  * Scales the RGB values of a pixel (not alpha though) by a scalar.
  */
-rgba_pixel& rgba_pixel::operator* (const float scalar){
-  rgba_pixel *p = new rgba_pixel;
+rgba_pixel& operator* (const rgba_pixel p, const float scalar){
+  rgba_pixel *retP = new rgba_pixel();
 
-  p->r = std::max(r * scalar, 255.0f);
-  p->g = std::max(g * scalar, 255.0f);
-  p->b = std::max(b * scalar, 255.0f);
-  p->a = a;
+  retP->r = std::max(std::min(p.r * scalar, 255.0f), 0.0f);
+  retP->g = std::max(std::min(p.g * scalar, 255.0f), 0.0f);
+  retP->b = std::max(std::min(p.b * scalar, 255.0f), 0.0f);
+  retP->a = p.a;
 
-  return *p;
+  return *retP;
+}
+
+rgba_pixel& operator* (const float scalar, rgba_pixel p){
+  return p * scalar;
+}
+
+std::ostream& rgba_pixel::operator<<(std::ostream& os){
+  os << std::fixed;
+  os << std::setprecision(4);
+  os << "(" << r << "," << g << "," << b << "," << a << ")";
+  return os;
 }
