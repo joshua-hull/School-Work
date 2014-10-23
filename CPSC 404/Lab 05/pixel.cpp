@@ -2,18 +2,14 @@
  * Joshua Hull (jhull@clemson.edu)
  * CPSC 4040-001 Fall 2014 Lab 1
  *
- * Generic RGBA pixel class. Copied from http://people.cs.clemson.edu/~levinej/courses/6040/code/flatview.zip
+ * Generic RGBA pixel class. Copied from
+ * http://people.cs.clemson.edu/~levinej/courses/6040/code/flatview.zip
+ *
+ * See pixel.h for comprehensive documentation.
  */
 
 #include "pixel.h"
 
-/**
- * @brief Array operator.
- * @details Array operator.
- *
- * @param int Array index.
- * @return Pointer to index.
- */
 float& rgba_pixel::operator[] (const unsigned int index) {
    if (index == 0) {
       return r;
@@ -31,10 +27,6 @@ float& rgba_pixel::operator[] (const unsigned int index) {
 
 /**
  * Added by Joshua Hull (jhull@clemson.edu)
- */
-
-/**
- * Scales the RGB values of a pixel (not alpha though) by a scalar.
  */
 rgba_pixel& operator* (const rgba_pixel p, const float scalar){
   rgba_pixel *retP = new rgba_pixel();
