@@ -31,9 +31,9 @@ float& rgba_pixel::operator[] (const unsigned int index) {
 rgba_pixel& operator* (const rgba_pixel p, const float scalar){
   rgba_pixel *retP = new rgba_pixel();
 
-  retP->r = std::max(std::min(p.r * scalar, 255.0f), 0.0f);
-  retP->g = std::max(std::min(p.g * scalar, 255.0f), 0.0f);
-  retP->b = std::max(std::min(p.b * scalar, 255.0f), 0.0f);
+  retP->r = std::max(std::min(p.r * scalar, 1.0f), 0.0f);
+  retP->g = std::max(std::min(p.g * scalar, 1.0f), 0.0f);
+  retP->b = std::max(std::min(p.b * scalar, 1.0f), 0.0f);
   retP->a = p.a;
 
   return *retP;
