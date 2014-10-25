@@ -41,7 +41,7 @@ char *inImage;								// Input image name used for reset
 bool toneMapped;              // Are we displaying the tone mapped image?
 
 std::vector<std::vector <float> > filter;	// 2d vecrtor representing the filter
-int count = 5;
+int count = 19;
 
 /**
  * @brief Read in images
@@ -202,6 +202,11 @@ void handleKey(unsigned char key, int x, int y) {
     }
 }
 
+/**
+ * Setup the openGL enviorment.
+ * @param width  Width of the window.
+ * @param height Height of the window.
+ */
 void openGLSetup(int width, int height) {
   // Window setup
   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
@@ -221,26 +226,30 @@ void openGLSetup(int width, int height) {
 
 }
 
+/**
+ * Perform a mathmatically correct modulos.
+ * @param  a Number to mod.
+ * @param  b Number modded by.
+ * @return   a mod b
+ */
 inline int modulo(int a, int b) {
   const int result = a % b;
   return result >= 0 ? result : result + b;
 }
 
-rgba_pixel** convolution(rgba_pixel** original, std::vector<std::vector <float> > filter){
-  rgba_pixel **convolution = new rgba_pixel*[height];
-  convolution[0] = new rgba_pixel[width*height];
+/**
+ * Convolve an array of floats with a given filter.
+ * @param  original The original array of floats.
+ * @param  filter   The filter to convolve with.
+ * @return          original convolved with filter.
+ */
+float** convolution(float** original, std::vector<std::vector <float> > filter){
+  float** convolution = new float*[height];
 
-  for (int i=1; i<height; i++) {
-    convolution[i] = convolution[i-1] + width;
-  }
-
-  for(int row = 0; row < height; row++)
+  for(int row = 0; row < height; row++){
+    convolution[row] = new float[width];
     for(int col = 0; col < width; col++){
-      rgba_pixel pixel;
-      pixel.r = 0.0;
-      pixel.g = 0.0;
-      pixel.b = 0.0;
-      pixel.a = 1.0;
+      float tmp = 0.0f;
 
       float negSum = 0.0;
       float posSum = 0.0;
@@ -249,22 +258,22 @@ rgba_pixel** convolution(rgba_pixel** original, std::vector<std::vector <float> 
       // Calculate the convolution using the tiling method for the boundry.
       for(int i = -radius; i <= radius; i++)
          for(int j = -radius; j <= radius; j++){
-            pixel.r += pixels[modulo(row + i,height)][modulo(col + j,width)].r*filter[i + radius][j + radius];
-            pixel.g += pixels[modulo(row + i,height)][modulo(col + j,width)].g*filter[i + radius][j + radius];
-            pixel.b += pixels[modulo(row + i,height)][modulo(col + j,width)].b*filter[i + radius][j + radius];
+            tmp += pixels[modulo(row + i,height)][modulo(col + j,width)].r*filter[i + radius][j + radius];
 
             if(filter[i + radius][j + radius] > 0) posSum += filter[i + radius][j + radius];
             else negSum += abs(filter[i + radius][j + radius]);
         }
-        pixel.r /= fmax(negSum,posSum);
-        pixel.g /= fmax(negSum,posSum);
-        pixel.b /= fmax(negSum,posSum);
+        tmp /= fmax(negSum,posSum);
 
-        convolution[row][col] = pixel;
+        convolution[row][col] = tmp;
     }
+  }
   return convolution;
 }
 
+/**
+ * Tone map the pixels in the image.
+ */
 void toneMapImage(){
 
   // Initalize 2d array
@@ -275,28 +284,86 @@ void toneMapImage(){
     toneMappedPixels[i] = toneMappedPixels[i-1] + width;
   }
 
+  // Simple Tone Mapping
   if(gOption) {
     for(int row = 0; row < height; row++)
       for(int col = 0; col < width; col++){
         rgba_pixel p = pixels[row][col];
+
+        // L_w = (20.0R+40.0G+B)/61.0
         float l_w = (20*p.r + 40*p.g + p.b)/61.0;
         float tmp = log(l_w);
+
+        // log(L_d) = gamma * log(L_w)
         float tmp2 = gValue * tmp;
         float l_d = exp(tmp2);
 
+        // C_d = (L_d/L_w) * C
         rgba_pixel tmpP = p * (l_d/l_w);
 
         toneMappedPixels[row][col] = tmpP;
       }
-  } else {
+  }
+  // Tone Mapping with Convolution
+  else {
+      float** B = new float*[height];
+      float** S = new float*[height];
+      float** l_w = new float*[height];
+      float** l_d = new float*[height];
+      float gamma;
+      float min_b = 1.0f;
+      float max_b = 0.0f;
+      int c = 5;
 
+      for (int i=0; i<height; i++) {
+        B[i] = new float[width];
+        S[i] = new float[width];
+        l_w[i] = new float[width];
+        l_d[i] = new float[width];
+      }
+
+      // log(L_w)
+      for(int row = 0; row < height; row++)
+        for(int col = 0; col < width; col++){
+          rgba_pixel p = pixels[row][col];
+          l_w[row][col] = log((20*p.r + 40*p.g + p.b)/61.0);
+        }
+
+      // B = log(L_w) (x) g
+      B = convolution(l_w, filter);
+
+      // S = log(L_w) - B
+      // Also calculate max(B) and min(B)
+      for(int row = 0; row < height; row++)
+        for(int col = 0; col < width; col++){
+          S[row][col] = l_w[row][col] - B[row][col];
+          min_b = fmin(min_b, B[row][col]);
+          max_b = fmax(max_b, B[row][col]);
+        }
+
+      // gamma = log(c)/(max(B)-min(B))
+      gamma = log(c)/float(max_b-min_b);
+
+      // log(L_d) = gamma * B + S
+      for(int row = 0; row < height; row++)
+        for(int col = 0; col < width; col++){
+          l_d[row][col] = gamma * B[row][col] + S[row][col];
+        }
+
+      // L_d = exp(log(L_d))
+      // L_w = exp(log(L_w))
+      // C_d = (L_d/L_w)*C
+      for(int row = 0; row < height; row++)
+        for(int col = 0; col < width; col++){
+          toneMappedPixels[row][col] = exp(l_d[row][col])/exp(l_w[row][col]) * pixels[row][col];
+        }
   }
 }
 
 int main(int argc, char** argv){
-  cOption = false;
-  gOption = false;
-  gValue = 0.0;
+  cOption = false;  // Are we performing a convolution tone mapping?
+  gOption = false;  // Are we performing a simple tone mapping?
+  gValue = 0.0;     // Gamma value for simple tone mapping.
 
   // Parse input parameters.
   char c;
@@ -317,11 +384,13 @@ int main(int argc, char** argv){
         break;
     }
 
+    // Error checking.
     if(!(cOption^gOption)) {
       printf("Only -g gamma or -c can be specified, not both or neither.\n");
       return EXIT_FAILURE;
     }
 
+    // Parse the rest of the parameters.
     if(cOption){
       if(argc == 4){
         canWrite = true;
@@ -361,7 +430,6 @@ int main(int argc, char** argv){
 
     // Start running display window
     glutMainLoop();
-
 
   return EXIT_SUCCESS;
 }
