@@ -11,8 +11,8 @@ CC = g++
 ifeq ("$(shell uname)", "Darwin")
   #Note that these paths are based on installing OpenImageIO with
   #homebrew, hence there are no needs for the include paths
-  OIIO_INC =
-  OIIO_LIB = -lOpenImageIO
+  OIIO_INC = -I /usr/local/include
+  OIIO_LIB = -L /usr/local/lib -lOpenImageIO
   OPENGL_LIB = -framework Foundation -framework GLUT -framework OpenGL
 else
   ifeq ("$(shell uname)", "Linux")

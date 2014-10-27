@@ -313,7 +313,7 @@ void toneMapImage(){
       float gamma;
       float min_b = 1.0f;
       float max_b = 0.0f;
-      int c = 5;
+      int c = 100;
 
       for (int i=0; i<height; i++) {
         B[i] = new float[width];
