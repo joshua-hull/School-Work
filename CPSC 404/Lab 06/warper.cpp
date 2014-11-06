@@ -130,7 +130,7 @@ void openGLSetup(int width, int height) {
   // Window setup
   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
   glutInitWindowSize(width, height);
-  glutCreateWindow("tonemap - Joshua Hull (jhull@clemson.edu)");
+  glutCreateWindow("warper - Joshua Hull (jhull@clemson.edu)");
 
   // Callback setup
   glutDisplayFunc(drawImage);
@@ -153,17 +153,16 @@ void openGLFlip() {
     openGLPixels.resize(newWidth*newHeight*4*sizeof(float));
     for (int row = 0; row < newHeight; row++)
       for (int col = 0; col < newWidth; col++){
-        std::cout << col << "," << row << std::endl;
-        openGLPixels[((newHeight - 1 - row)*newWidth+col)*4 + 0] = pixels[row][col].r;
-        openGLPixels[((newHeight - 1 - row)*newWidth+col)*4 + 1] = pixels[row][col].g;
-        openGLPixels[((newHeight - 1 - row)*newWidth+col)*4 + 2] = pixels[row][col].b;
-        openGLPixels[((newHeight - 1 - row)*newWidth+col)*4 + 3] = pixels[row][col].a;
+        openGLPixels[((newHeight - 1 - row)*newWidth+col)*4 + 0] = warppedPixels[row][col].r;
+        openGLPixels[((newHeight - 1 - row)*newWidth+col)*4 + 1] = warppedPixels[row][col].g;
+        openGLPixels[((newHeight - 1 - row)*newWidth+col)*4 + 2] = warppedPixels[row][col].b;
+        openGLPixels[((newHeight - 1 - row)*newWidth+col)*4 + 3] = warppedPixels[row][col].a;
       }
 }
 
 /**
  * Main program
- * @param  argc Number of command line arguments, inlucing the porgram itself.
+ * @param  argc Number of command line arguments, inlucing the program itself.
  * @param  argv Vector of command line arguments.
  * @return      EXIT_SUCCESS if program exits normally, EXIT_ERROR otherwise.
  */
@@ -185,57 +184,67 @@ int main(int argc, char** argv) {
   Vector3d upperLeft(0,originalHeight-1, 1);
   Vector3d lowerLeft(0,0, 1);
 
-  upperRight = (upperRight * M)/upperRight[2];
-  lowerRight = (lowerRight * M)/lowerRight[2];
-  upperLeft = (upperLeft * M)/upperLeft[2];
-  lowerLeft = (lowerLeft * M)/lowerLeft[2];
+  upperRight = (M * upperRight)/upperRight[2];
+  lowerRight = (M * lowerRight)/lowerRight[2];
+  upperLeft = (M * upperLeft)/upperLeft[2];
+  lowerLeft = (M  * lowerLeft)/lowerLeft[2];
 
-  std::cout << upperLeft << lowerLeft << upperRight << lowerRight << std::endl;
+  std::cout << upperLeft << "\t" << upperRight << std::endl << lowerLeft << "\t" << lowerRight << std::endl;
 
-  newWidth = max(abs(upperRight[1] - lowerRight[1]), abs(upperLeft[1] - lowerLeft[1]));
-  newHeight = max(abs(lowerRight[0] - lowerLeft[0]), abs(upperRight[0] - upperLeft[0]));
+  newWidth = max(max(lowerLeft[0], lowerRight[0]), max(upperLeft[0], upperRight[0]));
+  newHeight = max(max(lowerLeft[1], lowerRight[1]), max(upperLeft[1], upperRight[1]));
 
-  int originX = min(lowerLeft[0], lowerRight[0]);
-  int originY = min(lowerLeft[1], upperLeft[1]);
+  int originX = min(min(lowerLeft[0], lowerRight[0]), min(upperLeft[0], upperRight[0]));
+  int originY = min(min(lowerLeft[1], upperLeft[1]), min(lowerRight[1], upperRight[1]));
 
-  Vector3d newOrigin(originX, originY, 1);
+  newHeight = newHeight - originY;
+  newWidth = newWidth - originX;
+
+  Vector3d newOrigin(originX, originY, 0);
 
   // Initalize 2d array
   warppedPixels = new rgba_pixel*[newHeight];
   warppedPixels[0] = new rgba_pixel[newWidth*newHeight];
 
-  for (int i=1; i<originalHeight; i++) {
+  for (int i=1; i < newHeight; i++) {
     warppedPixels[i] = warppedPixels[i-1] + newWidth;
   }
 
   Matrix3x3 invM = M.inv();
 
+  std::cout << M << invM << std::endl;
+
   std::cout << "New Width: " << newWidth << " New Height: " << newHeight << std::endl;
+  std::cout << "Origin: " << newOrigin << std::endl;
 
   for(int row = 0; row < newHeight; row++)
     for(int col = 0; col < newWidth; col++) {
-      //map the pixel coordinates
+
       Vector3d pixel_out(col, row, 1);
       pixel_out = pixel_out + newOrigin;
       Vector3d pixel_in = invM * pixel_out;
-      //normalize the pixmap
+
       float u = pixel_in[0] / pixel_in[2];
       float v = pixel_in[1] / pixel_in[2];
-      //Could use better interpolation
-      warppedPixels[(int)round(u)][(int)round(v)] = pixels[col][row];
+
+      if((0 <= u && u < originalWidth) && (0 <= v && v < originalHeight))
+        warppedPixels[row][col] = pixels[(int)round(v)][(int)round(u)];
+      else {
+        rgba_pixel p;
+        p.r = 0;
+        p.g = 0;
+        p.b = 0;
+        p.a = 1;
+        warppedPixels[row][col] = p;
+      }
     }
 
     // Flip for openGL
-    std::cout << "Start flip..." << std::endl;
     openGLFlip();
-    std::cout << "End flip..." << std::endl;
 
     // Init OpenGL
     glutInit(&argc, argv);
-
-    std::cout << "Start setup..." << std::endl;
     openGLSetup(newWidth, newHeight);
-    std::cout << "End setup..." << std::endl;
 
     // Start running display window
     glutMainLoop();
