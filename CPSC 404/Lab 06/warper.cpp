@@ -153,6 +153,7 @@ void openGLFlip() {
     openGLPixels.resize(newWidth*newHeight*4*sizeof(float));
     for (int row = 0; row < newHeight; row++)
       for (int col = 0; col < newWidth; col++){
+        std::cout << col << "," << row << std::endl;
         openGLPixels[((newHeight - 1 - row)*newWidth+col)*4 + 0] = pixels[row][col].r;
         openGLPixels[((newHeight - 1 - row)*newWidth+col)*4 + 1] = pixels[row][col].g;
         openGLPixels[((newHeight - 1 - row)*newWidth+col)*4 + 2] = pixels[row][col].b;
@@ -189,8 +190,10 @@ int main(int argc, char** argv) {
   upperLeft = (upperLeft * M)/upperLeft[2];
   lowerLeft = (lowerLeft * M)/lowerLeft[2];
 
-  newHeight = max(abs(upperRight[0]-lowerRight[0]), abs(upperLeft[0]-lowerLeft[0]));
-  newWidth = max(abs(lowerRight[1] - lowerLeft[1]), abs(upperRight[1] - upperLeft[1]));
+  std::cout << upperLeft << lowerLeft << upperRight << lowerRight << std::endl;
+
+  newWidth = max(abs(upperRight[1] - lowerRight[1]), abs(upperLeft[1] - lowerLeft[1]));
+  newHeight = max(abs(lowerRight[0] - lowerLeft[0]), abs(upperRight[0] - upperLeft[0]));
 
   int originX = min(lowerLeft[0], lowerRight[0]);
   int originY = min(lowerLeft[1], upperLeft[1]);
@@ -207,6 +210,8 @@ int main(int argc, char** argv) {
 
   Matrix3x3 invM = M.inv();
 
+  std::cout << "New Width: " << newWidth << " New Height: " << newHeight << std::endl;
+
   for(int row = 0; row < newHeight; row++)
     for(int col = 0; col < newWidth; col++) {
       //map the pixel coordinates
@@ -221,11 +226,16 @@ int main(int argc, char** argv) {
     }
 
     // Flip for openGL
+    std::cout << "Start flip..." << std::endl;
     openGLFlip();
+    std::cout << "End flip..." << std::endl;
 
     // Init OpenGL
     glutInit(&argc, argv);
+
+    std::cout << "Start setup..." << std::endl;
     openGLSetup(newWidth, newHeight);
+    std::cout << "End setup..." << std::endl;
 
     // Start running display window
     glutMainLoop();
