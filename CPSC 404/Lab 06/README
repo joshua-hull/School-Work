@@ -1,37 +1,21 @@
 Joshua Hull (jhull@clemson.edu)
-CPSC 4040-001 Fall 2014 Lab 5
+CPSC 4040-001 Fall 2014 Lab 6
 
 USAGE
-tonemap -g value input_image [output_image] OR
-tonemap -c input_image [output_image]
+warper input_image [output_image]
 
 ABSTRACT
-Tonemap a HDR or EXR image with either gamma correction or global convolution of
-the luminance of the image.
+Warp an image through matrix multiplication by way of user input.
 
 COMPILING
 Simply type 'make' from the root directory.
 
 PARAMATERS
-* input_image: HDR or EXR image to tone map. Required.
-* value: The value of gamma when doing gamma correction. Required.
-* output_image: The name of the image to write to. Any format supported by OIIO.
-  See BUGS below. Optional.
+* input_image: Original image we are going to warp. Required.
+* output_image: The name of the image to write to. Optional.
 
 INTERACTION
 * Press 'q', 'Q', or ESC to exit the program.
-* Press 'w' or 'W' to write the tonemapped image to output_image. If no
-output_image is given then no image is written.
-* Press 's' or 'S' to switch between the original and tone mapped images.
 
 BUGS
-Program cannot write to hdr images. Program tries to validate command line
-parameters as best it can but it it possible to give it bad values. The USAGE
-above will always work.
-
-EXAMPLES
-Ocean_simple.png : Gamma of 0.18125.
-Ocean_convolution.png : Default values.
-
-smallDesignStudio_simple.png: Gamma of 0.085.
-smallDesignStudio_convolution.png : Default values.
+None known.

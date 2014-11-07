@@ -23,16 +23,17 @@
 
 OIIO_NAMESPACE_USING
 
-int originalWidth;
-int originalHeight;
-int channels;
-static std::vector<float> oiioPixels;
-static std::vector<float> openGLPixels;	   // Pixels being displayed by OpenGL
-rgba_pixel** pixels;
-rgba_pixel** warppedPixels;
+int originalWidth;                          // Width of the original input image
+int originalHeight;                         // Height of the original input image
+int channels;                               // Number of channels of the image
+static std::vector<float> oiioPixels;       // oiio pixels to read in and out
+static std::vector<float> openGLPixels;	    // Pixels being displayed by OpenGL
+rgba_pixel** pixels;                        // Original image pixels
+rgba_pixel** warppedPixels;                 // Warpped image pixels
 
-int newWidth;
-int newHeight;
+int newWidth;                               // Width of the warpped pixels
+int newHeight;                              // Height of the warpped pixels
+char *outImage;								              // File name for the output image
 
 /**
  * @brief Read in images
@@ -161,6 +162,44 @@ void openGLFlip() {
 }
 
 /**
+ * @brief Write imgage.
+ * @details Write compostied image to the file system.
+ */
+void writeImage() {
+
+  // Transfer to something OpenImageIO understands
+     oiioPixels.resize(newWidth*newHeight*4*sizeof(float));
+
+     for (int row = 0; row < newHeight; row++)
+         for (int col = 0; col < newWidth; col++){
+          oiioPixels[(row*newWidth+col)*4 + 0] = warppedPixels[row][col].r;
+          oiioPixels[(row*newWidth+col)*4 + 1] = warppedPixels[row][col].g;
+          oiioPixels[(row*newWidth+col)*4 + 2] = warppedPixels[row][col].b;
+          oiioPixels[(row*newWidth+col)*4 + 3] = warppedPixels[row][col].a;
+        }
+
+  // Create output image
+    ImageOutput *out = ImageOutput::create(outImage);
+
+    // Error handeling
+    if (!out) {
+        printf("Error writing image: %s\n", geterror().c_str());
+        exit(EXIT_FAILURE);
+    }
+
+    // Create output image spec
+    ImageSpec spec (newWidth, newHeight, 4, TypeDesc::FLOAT);
+
+    // Open output image file
+    out->open(outImage, spec);
+
+    // Write output image to disk and close
+    out->write_image(TypeDesc::FLOAT, &oiioPixels[0]);
+    out->close();
+    delete out;
+}
+
+/**
  * Main program
  * @param  argc Number of command line arguments, inlucing the program itself.
  * @param  argv Vector of command line arguments.
@@ -187,9 +226,7 @@ int main(int argc, char** argv) {
   upperRight = (M * upperRight)/upperRight[2];
   lowerRight = (M * lowerRight)/lowerRight[2];
   upperLeft = (M * upperLeft)/upperLeft[2];
-  lowerLeft = (M  * lowerLeft)/lowerLeft[2];
-
-  std::cout << upperLeft << "\t" << upperRight << std::endl << lowerLeft << "\t" << lowerRight << std::endl;
+  lowerLeft = (M * lowerLeft)/lowerLeft[2];
 
   newWidth = max(max(lowerLeft[0], lowerRight[0]), max(upperLeft[0], upperRight[0]));
   newHeight = max(max(lowerLeft[1], lowerRight[1]), max(upperLeft[1], upperRight[1]));
@@ -212,11 +249,6 @@ int main(int argc, char** argv) {
 
   Matrix3x3 invM = M.inv();
 
-  std::cout << M << invM << std::endl;
-
-  std::cout << "New Width: " << newWidth << " New Height: " << newHeight << std::endl;
-  std::cout << "Origin: " << newOrigin << std::endl;
-
   for(int row = 0; row < newHeight; row++)
     for(int col = 0; col < newWidth; col++) {
 
@@ -227,8 +259,12 @@ int main(int argc, char** argv) {
       float u = pixel_in[0] / pixel_in[2];
       float v = pixel_in[1] / pixel_in[2];
 
-      if((0 <= u && u < originalWidth) && (0 <= v && v < originalHeight))
-        warppedPixels[row][col] = pixels[(int)round(v)][(int)round(u)];
+      int roundedU = round(u);
+      int roundedV = round(v);
+
+      if((0 <= roundedU && roundedU < originalWidth) && (0 <= roundedV && roundedV < originalHeight)) {
+          warppedPixels[row][col] = pixels[roundedV][roundedU];
+        }
       else {
         rgba_pixel p;
         p.r = 0;
@@ -245,6 +281,11 @@ int main(int argc, char** argv) {
     // Init OpenGL
     glutInit(&argc, argv);
     openGLSetup(newWidth, newHeight);
+
+    if(argc == 3) {
+      outImage = argv[2];
+      writeImage();
+    }
 
     // Start running display window
     glutMainLoop();

@@ -18,8 +18,8 @@ void Perspective(Matrix3x3 &M, float px, float py) {
               0.0, 1.0, 0.0,
               0.0, 0.0, 1.0);
 
-  R[3][0] = px;
-  R[3][1] = py;
+  R[2][0] = px;
+  R[2][1] = py;
 
   Matrix3x3 Prod = R * M;
 
