@@ -1,0 +1,21 @@
+Joshua Hull (jhull@clemson.edu)
+CPSC 4040-001 Fall 2014 Lab 6
+
+USAGE
+warper input_image [output_image]
+
+ABSTRACT
+Warp an image through matrix multiplication by way of user input.
+
+COMPILING
+Simply type 'make' from the root directory.
+
+PARAMATERS
+* input_image: Original image we are going to warp. Required.
+* output_image: The name of the image to write to. Optional.
+
+INTERACTION
+* Press 'q', 'Q', or ESC to exit the program.
+
+BUGS
+None known.
