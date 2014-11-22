@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include "pixel.h"
 #include <OpenImageIO/imageio.h>
+#include <array>
 #ifdef __APPLE__
 #  include <GLUT/glut.h>
 #else
@@ -30,6 +31,7 @@ static std::vector<float> openGLPixels;	    // Pixels being displayed by OpenGL
 rgba_pixel** pixels;                        // Original image pixels
 rgba_pixel** warppedPixels;                 // Warpped image pixels
 char *outImage;								              // File name for the output image
+bool canWrite;
 
 /**
  * @brief Read in images
@@ -98,15 +100,75 @@ void openGLFlip() {
 }
 
 float u(int x, int y) {
-  return width * (1.0 - sqrt(1.0 - (x / width))) * (1.6 + 0.5 * cos((2 * PI * y) / height));
+  return width * (1.0 - sqrt(1.0 - (x / (float)width))) * (1.6 + 0.5 * cos((2 * PI * y) / (float)height));
 }
 
 float v(int x, int y) {
-  return height * (1.0 - sqrt(1.0 - (y / height))) * (1.6 + 0.5 * cos((2 * PI * x) / width));
+  return height * (1.0 - sqrt(1.0 - (y / (float)height))) * (1.6 + 0.5 * cos((2 * PI * x) / (float)width));
 }
 
+/**
+ * Process the image by averaging the four nearest pixels.
+ */
 void smartProcess() {
+  for (int row = 0; row < height; row++)
+    for (int col = 0; col < width; col++){
+      float U = round(u(col,row));
+      float V = round(v(col,row));
+      if(!((0 <= U && U < width ) && (0 <= V && V < height ))) {
+        rgba_pixel p;
+        p.r = 0.0;
+        p.g = 0.0;
+        p.b = 0.0;
+        p.a = 1.0;
+        warppedPixels[row][col] = p;
+      }
+      else {
+        int U1, U2, U3, U4;
+        int V1, V2, V3, V4;
+        rgba_pixel p, p1, p2, p3, p4;
 
+        U1 = U2 = floor(U);
+
+        U3 = U4 = floor(U + 1);
+        U3 = U4 = U3 % width;
+
+        V1 = V4 = floor(V + 1);
+        V1 = V4 = V4 % height;
+
+        V2 = V3 = floor(V);
+
+        p1 = pixels[V1][U1];
+        p2 = pixels[V2][U2];
+        p3 = pixels[V3][U3];
+        p4 = pixels[V4][U4];
+
+        std::array<rgba_pixel,4> neightborhood = {p1,p2,p3,p4};
+
+        float redSum = 0.0;
+        float greenSum = 0.0;
+        float blueSum = 0.0;
+        float alphaSum = 0.0;
+        for ( auto it = neightborhood.begin(); it != neightborhood.end(); ++it ) {
+          rgba_pixel p = *it;
+          redSum += p.r;
+          greenSum += p.g;
+          blueSum += p.b;
+          alphaSum += p.a;
+        }
+        redSum /= 4;
+        greenSum /= 4;
+        blueSum /= 4;
+        alphaSum /= 4;
+
+        p.r = redSum;
+        p.g = greenSum;
+        p.b = blueSum;
+        p.a = alphaSum;
+
+        warppedPixels[row][col] = p;
+      }
+  }
 }
 
 /**
@@ -124,20 +186,57 @@ void dumbProcess() {
 
   for (int row = 0; row < height; row++)
       for (int col = 0; col < width; col++){
-        float U = u(col,row);
-        float V = v(col,row);
-        std::cout << U << "," << V << std::endl;
-        if((0 <= U && U < width ) && (0 <= V && V < height )) warppedPixels[(int)round(V)][(int)round(U)] = pixels[row][col];
+        int U = (int)round(u(col,row));
+        int V = (int)round(v(col,row));
+        if((0 <= U && U < width ) && (0 <= V && V < height )) warppedPixels[row][col] = pixels[V][U];
         else {
           rgba_pixel p;
           p.r = 0.0;
           p.g = 0.0;
           p.b = 0.0;
           p.a = 1.0;
-          warppedPixels[(int)round(V)][(int)round(U)] = p;
+          warppedPixels[row][col] = p;
         }
      }
 
+}
+
+/**
+* @brief Write imgage.
+* @details Write compostied image to the file system.
+*/
+void writeImage() {
+
+  // Transfer to something OpenImageIO understands
+  oiioPixels.resize(width*height*4*sizeof(float));
+
+  for (int row = 0; row < height; row++)
+    for (int col = 0; col < width; col++){
+      oiioPixels[(row*width+col)*4 + 0] = warppedPixels[row][col].r;
+      oiioPixels[(row*width+col)*4 + 1] = warppedPixels[row][col].g;
+      oiioPixels[(row*width+col)*4 + 2] = warppedPixels[row][col].b;
+      oiioPixels[(row*width+col)*4 + 3] = warppedPixels[row][col].a;
+    }
+
+    // Create output image
+    ImageOutput *out = ImageOutput::create(outImage);
+
+    // Error handeling
+    if (!out) {
+      printf("Error writing image: %s\n", geterror().c_str());
+      exit(EXIT_FAILURE);
+    }
+
+    // Create output image spec
+    ImageSpec spec (width, height, 4, TypeDesc::FLOAT);
+
+    // Open output image file
+    out->open(outImage, spec);
+
+    // Write output image to disk and close
+    out->write_image(TypeDesc::FLOAT, &oiioPixels[0]);
+    out->close();
+    delete out;
 }
 
 /**
@@ -158,6 +257,10 @@ void handleKey(unsigned char key, int x, int y) {
         case 'r':
         case 'R':
           smartProcess();
+          openGLFlip();
+          glutPostRedisplay();
+          if(canWrite) writeImage();
+          break;
 
         default:
           return;
@@ -188,7 +291,7 @@ void openGLSetup(int width, int height) {
   // Window setup
   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
   glutInitWindowSize(width, height);
-  glutCreateWindow("warper - Joshua Hull (jhull@clemson.edu)");
+  glutCreateWindow("warp - Joshua Hull (jhull@clemson.edu)");
 
   // Callback setup
   glutDisplayFunc(drawImage);
@@ -201,44 +304,6 @@ void openGLSetup(int width, int height) {
 
   glClearColor(1, 1, 1, 1);
 
-}
-
-/**
- * @brief Write imgage.
- * @details Write compostied image to the file system.
- */
-void writeImage() {
-
-  // Transfer to something OpenImageIO understands
-     oiioPixels.resize(width*height*4*sizeof(float));
-
-     for (int row = 0; row < height; row++)
-         for (int col = 0; col < width; col++){
-          oiioPixels[(row*width+col)*4 + 0] = warppedPixels[row][col].r;
-          oiioPixels[(row*width+col)*4 + 1] = warppedPixels[row][col].g;
-          oiioPixels[(row*width+col)*4 + 2] = warppedPixels[row][col].b;
-          oiioPixels[(row*width+col)*4 + 3] = warppedPixels[row][col].a;
-        }
-
-  // Create output image
-    ImageOutput *out = ImageOutput::create(outImage);
-
-    // Error handeling
-    if (!out) {
-        printf("Error writing image: %s\n", geterror().c_str());
-        exit(EXIT_FAILURE);
-    }
-
-    // Create output image spec
-    ImageSpec spec (width, height, 4, TypeDesc::FLOAT);
-
-    // Open output image file
-    out->open(outImage, spec);
-
-    // Write output image to disk and close
-    out->write_image(TypeDesc::FLOAT, &oiioPixels[0]);
-    out->close();
-    delete out;
 }
 
 /**
@@ -266,11 +331,11 @@ int main(int argc, char** argv) {
 
   if(argc == 3) {
     outImage = argv[2];
-    writeImage();
+    canWrite = true;
   }
 
-    // Start running display window
-    glutMainLoop();
+  // Start running display window
+  glutMainLoop();
 
   return EXIT_SUCCESS;
 }

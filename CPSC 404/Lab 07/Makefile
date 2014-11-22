@@ -34,14 +34,11 @@ PROJECT1 = warp
 #list a .o file for each .cpp file that you will compile
 #this makefile will compile each cpp separately before linking
 OBJECTS1 = warp.o pixel.o
-VECTOR = vecmat
-VECTOROBJS = ${VECTOR}/*.o
 
 #this target does the linking step
 all: ${PROJECT1}
 
 ${PROJECT1}: ${OBJECTS1}
-	make -C ${VECTOR}
 	${CC} -o ${PROJECT1} ${OBJECTS1} ${VECTOROBJS} ${LDFLAGS}
 
 #this target generically compiles each .cpp to a .o file
@@ -51,5 +48,4 @@ ${PROJECT1}: ${OBJECTS1}
 
 #this will clean up all temporary files created by make all
 clean:
-	rm -f core.* *.o *~ ${PROJECT1} ${PROJECT2}
-	make -C ${VECTOR} clean
+	rm -f core.* *.o *~ ${PROJECT1}

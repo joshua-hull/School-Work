@@ -1,21 +1,28 @@
 Joshua Hull (jhull@clemson.edu)
-CPSC 4040-001 Fall 2014 Lab 6
+CPSC 4040-001 Fall 2014 Lab 7
 
 USAGE
-warper input_image [output_image]
+warp input_image [output_image]
 
 ABSTRACT
-Warp an image through matrix multiplication by way of user input.
+Warp an image and repair reconstruction artifacts.
 
 COMPILING
 Simply type 'make' from the root directory.
 
 PARAMATERS
 * input_image: Original image we are going to warp. Required.
-* output_image: The name of the image to write to. Optional.
+* output_image: The name of the repaired image to write to. Optional.
 
 INTERACTION
 * Press 'q', 'Q', or ESC to exit the program.
+* Press 'r' or 'R' to reconstruct using the improved technique. Also write to
+  output_image if it is given.
+
+RECONSTRUCTION
+Reconstruction is done by sampling the four nearest neighbors, tiling on the
+upper and right hand edges. Example of reconstruction of construction.tif is
+included as reconstruction.tif.
 
 BUGS
 None known.
