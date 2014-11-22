@@ -1,3 +1,6 @@
 [submodule "CPSC 491"]
 	path = CPSC 491
 	url = git@github.com:joshua-hull/cpsc491.git
+[submodule "CPSC 404/Project"]
+	path = CPSC 404/Project
+	url = git@github.com:joshua-hull/CPSC-404-Final-Project.git
