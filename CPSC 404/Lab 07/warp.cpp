@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <math.h>
 #include "pixel.h"
 #include <OpenImageIO/imageio.h>
 #include <array>
@@ -19,7 +20,6 @@
 #else
 #  include <GL/glut.h>
 #endif
-#include "vecmat/Matrix.h"
 
 OIIO_NAMESPACE_USING
 
@@ -100,11 +100,11 @@ void openGLFlip() {
 }
 
 float u(int x, int y) {
-  return width * (1.0 - sqrt(1.0 - (x / (float)width))) * (1.6 + 0.5 * cos((2 * PI * y) / (float)height));
+  return width * (1.0 - sqrt(1.0 - (x / (float)width))) * (1.6 + 0.5 * cos((2 * M_PI * y) / (float)height));
 }
 
 float v(int x, int y) {
-  return height * (1.0 - sqrt(1.0 - (y / (float)height))) * (1.6 + 0.5 * cos((2 * PI * x) / (float)width));
+  return height * (1.0 - sqrt(1.0 - (y / (float)height))) * (1.6 + 0.5 * cos((2 * M_PI * x) / (float)width));
 }
 
 /**
