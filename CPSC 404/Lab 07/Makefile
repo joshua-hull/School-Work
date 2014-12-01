@@ -26,7 +26,7 @@ endif
 
 #build the LDFLAG snd CFLAGS based on variables above
 LDFLAGS = $(OPENGL_LIB) $(OIIO_LIB)
-CFLAGS = -g $(OIIO_INC)
+CFLAGS = -g -std=c++0x $(OIIO_INC)
 
 #this will be the name of your executable
 PROJECT1 = warp
