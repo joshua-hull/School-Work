@@ -1,0 +1,6 @@
+z a b + =
+w x y + 2 z - * =
+w x b - 2 z - 5 ^ ~ * =
+z x c + w =
+w z a $
+w w v + - =

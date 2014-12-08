@@ -1,0 +1,59 @@
+window
+   name view1
+   windowwidth 6
+   windowheight 4
+   columns 400
+   viewpoint 0 0 5
+   ambient 7 7 7 ;
+
+triangle name tri1
+   color red
+   point -1.40 -1.40 -4
+   orient1 1 0 0
+   length1 2
+   orient2 1 1.73205 0
+   length2 2 ;
+
+triangle name tri2
+   color yellow
+   point 1 0 -10
+   orient1 -1 0 3
+   length1 10  
+   orient2 0 1 0
+   length2 3 ;
+
+sphere name pierced
+   color blue
+   center -1.5 0 -3
+   radius 1 ;
+
+
+triangle name tri3
+   color purple
+   point 2 -2 -40
+   orient1 0 0 1
+   length1 38
+   orient2 -1 0 0
+   length2 6 ;
+
+triangle name tri4
+   color 250 120 120
+   point 2 -2 -40
+   orient1 0 0 1
+   length1 38
+   orient2 1 0 0
+   length2 6 ;
+
+triangle name tri5
+   color 255 0 128
+   point 2 0 -3 
+   orient1 1 0.5 0
+   length1 2
+   orient2 1 2.23205 0
+   length2 2 ;
+
+plane name back
+   color white
+   point 0 0 -50
+   orient1 1 0 0
+   orient2 0 1 0 ;

@@ -1,0 +1,29 @@
+1.  ------
+    | 04 |
+    ------
+    | 21 |
+    ------
+    | 15 |
+    ------
+    | 09 |
+    ------
+    | 02 |
+    ------
+    | 23 |
+    ------
+    | 86 |
+    ------
+    | 01 |
+    ------
+    | 05 |
+    ------
+    | 34 |
+    ------
+    | sp |
+    ------
+2.
+
+The address of the elements are calulated as an offset of the stack pointer.
+They are in the form SP + (8 * i) where i is the index of the array. Since i is
+incremented as part of the loop and the values are stored in sequential parts
+of memory they can be accessed in this way.

@@ -1,0 +1,39 @@
+window
+   name view1
+   windowwidth 8
+   windowheight 6
+   columns 400
+   viewpoint 0 0 5
+   ambient 6 6 6 ;
+
+plane  name plane1 
+   color 255 0 0
+   point 0 -3 0
+   orient1 1 1 0
+   orient2 0 0 1 ;
+
+plane  name plane2 
+   point 0 -3 0
+   orient1 -1 1 0 
+   orient2 0 0 1
+   color 0 0 255
+   diffuse 0.9 0.9 0.9
+   reflective 0.5 0.5 0.5 ;
+
+sphere  name ball1 
+   color 0 255 255
+   center -1 2 -3.5
+   radius 1.25 ;
+
+sphere  name ball2
+   color 0 255 0
+   center 1 2 -3.5
+   diffuse 0.5 0.5 0.5
+   radius 1.25 ;
+
+sphere  name ball3
+   reflective 1 1 1
+   center 0 0 -3.5
+   radius 1.25
+   color 255 255 0 ;
+

@@ -1,0 +1,35 @@
+window
+   name view1
+   windowwidth 8
+   windowheight 6
+   columns 400
+   viewpoint 0 1 5
+   ambient 4 4 4 ;
+
+pointlight
+   name toplight
+   color 255 255 255
+   brightness 12
+   center -5 1 -2 ;
+
+sphere
+   color white
+   diffuse 0.75 0.75 0.75
+   reflective 1 1 1
+   center -2.5 1.0 -5
+   radius 1.25 ;
+
+tiled
+   name checkerboard
+   color 247 140 23
+   diffuse 1 1 1
+   point -5.5 -4 -2
+   orient1 0 0.50 -1
+   width 20
+   orient2 1 0.50 0   
+   height 10 
+   color2 237 33 237
+   diffuse2 1 1 1
+   tilewidth 1
+   tileheight 0.75 ;
+   

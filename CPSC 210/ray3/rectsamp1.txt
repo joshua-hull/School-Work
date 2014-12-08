@@ -1,0 +1,64 @@
+window
+   name view1
+   windowwidth 6
+   windowheight 4
+   columns 400
+   viewpoint 0 0 5
+   ambient 7 7 7 ;
+
+rectangle name rect1
+   color red
+   point -2 -2 -0.5
+   orient1 1 0 0.1
+   width 2 
+   orient2 0 0 -1
+   height 40 ;
+
+rectangle name rect1a
+   color white
+   point -1.1 -1.99 -0.5
+   orient1 1 0 0.1
+   width 0.1
+   orient2 0 0 -1
+   height 40 ;
+
+rectangle name rect1b
+   color white
+   point -0.9 -1.99 -0.5
+   orient1 1 0 0.1
+   width 0.1
+   orient2 0 0 -1
+   height 40 ;
+
+
+rectangle name rect2
+   color yellow
+   point 0.5 -1.5 -2
+   orient1 1 0 0
+   width 2
+   orient2 0 1 0
+   height 1 ;
+
+rectangle name rect3
+   color purple
+   point -3 -1.5 -8
+   orient1 1 0 0
+   width 0.5
+   orient2 0 1 0
+   height 1.5 ;
+
+rectangle name rect4
+   color green
+   point 0 0.5 -4
+   orient1 1 1 -1
+   width 2
+   orient2 0 1 0
+   height 2 ;
+
+
+
+plane name back
+   color white
+   point 0 -3 -50
+   orient1 1 0 0
+   orient2 0 1 0 ;

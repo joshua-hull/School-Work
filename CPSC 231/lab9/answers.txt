@@ -1,0 +1,40 @@
+1. (20 pts) Fill in the table below for every call to "fact". Each row
+represents the values of r1 and lr when line 3 executes and they are pushed
+onto the stack. The first time it executes, r1 is unset and the lr points to line 35.
+
+r1	lr
+---	-------
+-	36
+10	14
+ 9  14
+ 8	14
+ 7	14
+ 6	14
+ 5  14
+ 4	14
+ 3 	14
+ 2  14
+ 1  14
+
+2. (15 pts) In "fact.s", the multiply instruction on line 15 comes after a "bl" which is a branch that will always be taken. How does line 14 get executed if the "bl" is always taken?
+
+When r1 equals 1 then fact branches to L3 instead of L2. L3 pops lr off the
+stack that was pushed as lr on lines 14 and 34 into PC . The first time L3 pops
+it continues into L2. L2 pops 14 again, as shown by the chart, and the loop
+continues until 36 is popped into the PC.
+
+HINT: Review what "bl" does at http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0489c/Cihfddaf.html (scroll down to "Operations")
+
+3. (10 pts) Why doesn't the code in "fac2.s" save any registers on the stack? What is it doing instead?
+
+fac2.s keeps a running total of the factorial in r1. r0 is decremented as the
+function loops inside L3. When r0 hits 1 then the loops is broken and L2
+executes, branching back to main.
+
+4. (5 pts) Identify which program calculates the factorial recursively and which is iterative.
+
+fac.s is recursive, fac2.s is iterative.
+
+5. (50 pts) Comment each line in "fac.s" and "fac2.s" that has the comment symbol (@) at the end of it.
+
+NOTE: The comments for "main:" in "fac.s" are already done for you and you do not have to comment "main:" in "fac2.s".

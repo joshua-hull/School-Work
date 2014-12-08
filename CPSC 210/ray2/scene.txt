@@ -1,0 +1,48 @@
+window  name theview
+  viewpoint   0 0 4
+  windowwidth  10
+  windowheight 8
+  columns  500
+  ambient     6 6 6 ;
+
+pointlight  name light1
+   brightness 7 
+   color 240 250 255
+   center -3 0 -0.25 ;
+
+pointlight  name light2
+  color 255 255 255
+  brightness 6 
+  center -3 2 -1.5 ;
+
+plane  name wall
+   color 255 255 255
+   diffuse 1 1 1
+   point 0 -5 -11
+   orient1 2 0 1
+   orient2 0 1 0 ;
+
+plane  name floor 
+   color 48 48 200
+   diffuse 1 1 1
+   point 0 -5 0
+   orient1 0 0 1
+   orient2 1 0 0 ;
+
+rectangle name rect1
+   color red
+   diffuse 1 1 1
+   point 3 -2 -8
+   height 10
+   width 5 
+   orient1 2 0 1
+   orient2 0 1 0 ;
+
+triangle name tri1
+   color orange
+   diffuse 1 1 1
+   point 3 3 -6
+   length1 2
+   length2 3
+   orient1 2 0 1
+   orient2 0 1 0 ;

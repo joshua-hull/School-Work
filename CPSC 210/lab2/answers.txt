@@ -1,0 +1,44 @@
+CP SC 210: Lab 2
+
+Using an editor answer the following questions.
+
+NAME:
+
+TASK 3 QUESTIONS:
+
+1) What line in broken2.c did the program seg fault on?
+Line 24
+
+2) What was the value of the variable "count" at the time of the seg fault?
+10
+
+3) What was the value of the variable "ndx" at the time of the seg fault?
+592
+
+4) What was the value of the variable "search" at the time of the seg fault?
+1
+
+5) What are the values in the "table" array?
+20, 13, 30, -10, 40, 50, -20, 60, 70, 5
+
+6) what do the you think the bug is?
+In line 23 the variable "search" is being set to 1 versus testing against the value 1.
+
+
+TASK 4 QUESTIONS:
+
+1) What was the line number of the last statement executed in broken3.c 
+   before the program seg faulted?
+Line 25
+
+2) What was the value of the variable "first" at the time of the seg fault?
+1
+
+3) What was the value of the variable "max" at the time of the seg fault?
+-100000
+
+4) What was the value of the variable "ndx" at the time of the seg fault?
+-300000
+
+5) what do the you think the bug is?
+The value "ndx" is never initialized.

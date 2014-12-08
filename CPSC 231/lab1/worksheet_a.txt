@@ -1,0 +1,53 @@
+CP SC 3621 Lab 1
+
+1. Run "./acc_x86". Explain what the simulator is doing in the fetch, decode, execute
+    cycle. (10 points)
+
+Fetch: The contents of the memory address in the PC are loaded into the IR.
+Decode: The contents of the IR are translated into Opcodes and operands.
+Execute: The opcode is executed with it's operands.
+
+2. You should be using the instruction ble0 in your my_loop.m source code. At which position in memory (i.e. program counter value) is the ble0 instruction? (10 points)
+
+PC = 017 (I used bgt0 instead.)
+
+
+3. Explain the difference between MDR and MAR. (10 points)
+
+The MAR is the address of memory that is going to be read or writted. The MDR is the new contents that will be written to or were read from the memory location in the MAR.
+
+4. Run the three versions of the program using acc and record the statistics. (10 points)
+
+source1.m:
+    instructions executed =  98
+    instruction fetches   = 195
+    data reads            =  54
+    data writes           =  22
+
+source2.m:
+    instructions executed =  76
+    instruction fetches   = 151
+    data reads            =  43
+    data writes           =  22
+
+my_loop.m:
+    instructions executed = 109
+    instruction fetches   = 217
+    data reads            =  65
+    data writes           =  22
+
+5. Explain the differences in statistics. (15 points)
+
+my_loop.m uses more data reads then either source1.m or source2.m since it has to load ten before it can subtract it.
+
+All three sources use the same number of writes since they only store i and sum.
+
+source.2.m executes less instrucitions since it checks if i is less then zero before branching while source1.m checks at the begining of the loop.
+source1.m has to load in to i into the accumulator in order to check it, which uses additional instuctions in each loop.
+
+6. Which version is better? Why is it better? (15 points)
+
+source2.m would be better since the amount of time to read and write data is musch longer then executing instrucitons.
+
+7. Fill in the blanks in worksheet_b.txt. (30 points)
+

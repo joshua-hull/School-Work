@@ -1,0 +1,88 @@
+window
+   name view1
+   windowwidth 8
+   windowheight 6
+   columns 400
+   viewpoint 0 0 5
+   ambient 4 4 4 ;
+
+plane  name plane1 
+   color 212 0 0
+   diffuse 0.75 0.75 0.75
+   point 0 -3 0
+   orient1 1 1 0
+   orient2 0 0 1 ;
+
+plane  name plane2 
+   point 0 -3 0
+   color 0 0 212
+   diffuse 0.75 0.75 0.75 
+   orient1 -1 1 0 
+   orient2 0 0 1 ;
+
+sphere  name ball1 
+   color 0 255 255
+   diffuse 0.75 0.75 0.75
+   center -1 2 -3.5
+   radius 1.25 ;
+
+sphere  name ball2
+   color 0 255 0
+   diffuse 0.75 0.75 0.75
+   center 1 2 -3.5
+   diffuse 0.5 0.5 0.5
+   radius 1.25 ;
+
+sphere  name ball3
+   diffuse 0.75 0.75 0.75
+   center 0 0 -3.5
+   radius 1.25
+   color 255 255 0 ;
+
+pointlight
+   name toplight
+   color 255 255 255
+   brightness 6
+   center 3 4 -1 ;
+
+pointlight
+   name bottomright
+   color 255 255 255
+   brightness 10
+   center 4 -4 -8 ;
+
+pointlight
+   name bottomleft
+   color 255 255 255
+   brightness 10
+   center -4 -4 -8 ;
+
+rectangle
+   name mouth
+   color 255 128 0
+   point 0 -2 -1
+   orient1 1 0 -1
+   width 1
+   orient2 -1 0 -1
+   height 1 ;
+
+triangle
+   name righteyebrow
+   color 255 128 0
+   diffuse 0.75 0.75 0.75
+   point 0.2 2.5 -1.5
+   orient1 1 0.5 -0.5
+   length1 2.75
+   orient2 1 0.75 -0.5
+   length2 2.75 ;
+
+triangle
+   name lefteyebrow
+   color 255 128 0
+   diffuse 0.75 0.75 0.75
+   point -0.2 2.5 -1.5
+   orient1 -1 0.5 -0.5
+   length1 2.75
+   orient2 -1 0.75 -0.5
+   length2 2.75 ;
+

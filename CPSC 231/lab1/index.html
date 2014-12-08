@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta name="generator" content=
+	"HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org" />
+	<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+	<title>CpSc 2311 Lab 1: Accumulator Machine</title>
+	<link rel="StyleSheet" href="../web-share/screen.css" type="text/css" />
+	<style type="text/css">
+/*<![CDATA[*/
+	 #instruction_table td, #instruction_table th {
+		vertical-align: top;
+		text-align: left;
+		padding-right: 0.5em;
+	 }
+	/*]]>*/
+	</style>
+</head>
+
+<body>
+	<div id="header">
+		<h1>CpSc 2311 Lab 1: Accumulator Machine</h1>
+	</div>
+	<hr />
+
+	<h2>Introduction</h2>
+
+	<p>The accumulator machine is a simple model of a CPU. In today's lab you will
+	experiment with an accumulator simulator so that you can better understand how it
+	functions.</p>
+
+	<p>The two most important registers in this type of CPU are the Accumulator
+	(<tt>ACC</tt>) and the Program Counter (<tt>PC</tt>). The Accumulator contains the
+	current value during computation and the Program Counter keeps track of the current
+	instruction (or line) in the program.</p><!-- <p>
+  Running the ACC machine simulator prints the value of the program counter, the
+  instruction, and the value of the accumulator after each instruction.
+</p> -->
+
+	<p>Before looking at the program you will be working on in assembly, here it is
+	expressed using C-syntax</p>
+
+	<blockquote>
+		<pre>
+	sum = 0;
+	for (i = 10; i > 0; i--)
+	{
+	   sum = sum + i;
+	}
+		</pre>
+	</blockquote>
+
+	<p>To execute it using the accumulator simulator it must be expressed in assembly
+	language. Below is the code for it writte in generic assembly (this is not ARM
+	code).</p>
+
+	<blockquote>
+		<pre>
+	            comment(`  set aside memory and initialize variables ')
+	word(sum,0)  
+	word(i,0)
+	word(zero,0)
+	word(one,1)
+	word(ten,10)
+
+label(start)
+
+	            comment(`  Note: in the rest of the program usually  ')
+	            comment(`  more than one assembly code instruction   ')
+	            comment(`  is needed for each Java statement         ')
+	            comment(`  sum = 0                                   ')
+
+	load(zero)  comment(`  ACC &lt;- memory[zero]  load ACC with zero   ')
+	store(sum)  comment(`  memory[sum] &lt;- ACC   store ACC to sum     ')
+
+	            comment(`  i = 10                                    ')
+	load(ten)   comment(`  ACC &lt;- memory[ten]                        ')
+	store(i)    comment(`  memory[i] &lt;- ACC                          ')
+
+label(loop)
+
+	            comment(`  sum = sum + i                             ')
+	load(sum)   comment(`  ACC &lt;- memory[sum]                        ')
+	add(i)      comment(`  ACC &lt;- ACC + memory[i]                    ')
+	store(sum)  comment(`  memory[sum] &lt;- ACC                        ')
+
+	            comment(`  i = i - 1                                 ')
+	load(i)     comment(`  ACC &lt;- memory[i]                          ')
+	sub(one)    comment(`  ACC &lt;- ACC - memory[one]                  ')
+	store(i)    comment(`  memory[i] <- ACC                          ')
+
+	            comment(`  Conditionally branch back to loop         ')
+	bgt0(loop)  comment(`  if ACC > 0 goto loop                      ')
+
+label(done)
+
+	print(sum)  comment(`  Print the value of sum                    ')
+	halt        comment(`  Stop the program                          ')
+
+	            comment(`  start execution at label start            ')
+	start       comment(`  The last word in the program indicates    ')
+	            comment(`  where the program starts                  ')
+		</pre>
+	</blockquote>
+
+	<hr />
+
+	<h2>Getting the Lab Files</h2>
+
+	<p>It is highly recommended that you create a seperate folder for this class (ex:
+	"~/231lab/lab1") to keep it seperate from the lecture. Open a terminal and navigate to
+	the directory you wish to copy the lab files to and run the following command.</p>
+
+	<blockquote>
+		<pre>
+	cp "/group/course/cpsc231/public_html/lab231/labs/lab01/"* . 2&gt; /dev/null
+	chmod a+r *
+		</pre>
+	</blockquote>
+
+	<hr />
+
+	<h2>How to Compile and Run Programs on the Accumulator Machine</h2>
+
+	<p>The shell script <tt>assemble.sh</tt> (which you downloaded in the previous
+	section) will translate a program in accumulator assembly language to a numeric form
+	that the simulator can read. The shell script accepts the name of your source file as
+	a command line argument and produces the assembled code in a file named
+	<tt>executable</tt>.</p>
+
+	<p>Note: The last number in the file executable needs to be the address of the first
+	executable instruction.</p>
+
+	<ul>
+		<li>Use the <tt>label</tt> pseudo-instruction to indicate where the program
+		begins.</li>
+
+		<li>The last (non-blank) line needs to contain that label.</li>
+	</ul>
+
+	<hr />
+
+	<h2>Starting the Simulator</h2>
+
+	<p>To start the simulator, run <tt>./acc</tt> from the command prompt. The program
+	will segfault if you do not have a file named "executable" in your directory since
+	that is its input file. Once started, the simulator will print each line of the
+	original source code along with the program counter value for that line and the
+	current value of the accumulator register.</p>
+
+	<p>After the simulator finishes running through the code, it will display basic
+	runtime statistics like below:</p>
+
+	<blockquote>
+		<pre>
+	instructions executed =  90
+	instruction fetches   = 189
+	data reads            =  50
+	data writes           =  22
+		</pre>
+	</blockquote>
+
+	<p>You will need to record certain statistics as part of the lab</p>
+
+	<hr />
+
+	<h2>Accumulator Assembly</h2>
+
+	<p>Here is a table of instructions for the generic assembly language that the
+	simulator supports.</p>
+
+	<table id="instruction_table">
+		<tr>
+			<th>Instruction</th>
+
+			<th>Opcode</th>
+
+			<th>Description</th>
+		</tr>
+
+		<tr>
+			<td>halt</td>
+
+			<td>00</td>
+
+			<td>Stop the program</td>
+		</tr>
+
+		<tr>
+			<td>div</td>
+
+			<td>10</td>
+
+			<td>Divide the accumulator by the argument<br />
+			ACC &lt;- ACC / arg</td>
+		</tr>
+
+		<tr>
+			<td>mul</td>
+
+			<td>20</td>
+
+			<td>Multiply the accumulator by the argument<br />
+			ACC &lt;- ACC * arg</td>
+		</tr>
+
+		<tr>
+			<td>sub</td>
+
+			<td>30</td>
+
+			<td>Subtract the argument from the accumulator<br />
+			ACC &lt;- ACC - arg</td>
+		</tr>
+
+		<tr>
+			<td>add</td>
+
+			<td>40</td>
+
+			<td>Add the accumulator to the argument<br />
+			ACC &lt;- ACC + arg</td>
+		</tr>
+
+		<tr>
+			<td>load</td>
+
+			<td>50</td>
+
+			<td>Load the accumulator from the memory<br />
+			ACC &lt;- memory[arg]</td>
+		</tr>
+
+		<tr>
+			<td>store</td>
+
+			<td>60</td>
+
+			<td>Store the value of the accumulator to memory<br />
+			memory[arg] &lt;- ACC</td>
+		</tr>
+
+		<tr>
+			<td>print</td>
+
+			<td>90</td>
+
+			<td>Print the contents of the accumulator</td>
+		</tr>
+
+		<tr>
+			<td>label</td>
+
+			<td>NA</td>
+
+			<td>used by the assembler to associate a symbol with an address</td>
+		</tr>
+
+		<tr>
+			<td>word</td>
+
+			<td>NA</td>
+
+			<td>used to allocate space and initialize a variable</td>
+		</tr>
+
+		<tr>
+			<td>ba</td>
+
+			<td>70</td>
+
+			<td>Branch always</td>
+		</tr>
+
+		<tr>
+			<td>blt0</td>
+
+			<td>71</td>
+
+			<td>Branch if less than zero<br />
+			if ACC &lt; 0 then PC &lt;- arg</td>
+		</tr>
+
+		<tr>
+			<td>ble0</td>
+
+			<td>72</td>
+
+			<td>Branch if less than or equal to zero<br />
+			if ACC &lt;= 0 then PC &lt;- arg</td>
+		</tr>
+
+		<tr>
+			<td>beq0</td>
+
+			<td>73</td>
+
+			<td>Branch if equal to zero<br />
+			if ACC == 0 then PC &lt;- arg</td>
+		</tr>
+
+		<tr>
+			<td>bne0</td>
+
+			<td>74</td>
+
+			<td>Branch if not equal to zero<br />
+			if ACC != 0 then PC &lt;- arg</td>
+		</tr>
+
+		<tr>
+			<td>bge0</td>
+
+			<td>75</td>
+
+			<td>Branch if greater than or equal to zero<br />
+			if ACC &gt;= 0 then PC &lt;- arg</td>
+		</tr>
+
+		<tr>
+			<td>bgt0</td>
+
+			<td>76</td>
+
+			<td>Branch if greater than zero<br />
+			if ACC &gt; 0 then PC &lt;- arg</td>
+		</tr>
+	</table>
+	
+	<hr />
+
+	<h2>Three Different Ways to Write a Program</h2>
+
+	<p>The source files <tt>source1.m</tt> and <tt>source2.m</tt> are two different
+	methods of computing the sum of the integers between 1 and 10. Both of the programs
+	start an index variable at ten and decrement it to zero.</p>
+
+	<p>As part of your assignment, write a third program <tt>my_loop.m</tt> that does the
+	same calculation, but starts at one and is incremented to ten.</p>
+
+	<p>For example, using C-syntax, the code for source1.m and source2.m would look like
+	this</p>
+
+	<blockquote>
+		<pre>
+	sum = 0;
+	for (i = 10; i > 0; i--)
+	{
+	   sum = sum + i;
+	}
+		</pre>
+	</blockquote>
+
+	<p>while the program you will be writing would look like this</p>
+
+	<blockquote>
+		<pre>
+	sum = 0;
+	for(i = 1; i <= 10; i++)
+	{
+	   sum = sum + i;
+	}
+		</pre>
+	</blockquote>
+
+	<hr />
+
+	<h2>An Exercise: From Assembly Code to Numbers and Back</h2>
+
+	<p>In the files you copied in the beginning of lab, you should have a file named
+	worksheet_a.txt and worksheet_b.txt. Each of these worksheets must be filled in and
+	submitted along with your completed source file from the previous section. Worksheet_a
+	has 6 questions while worksheet_b is a fill in the blank exercise. Worksheet_b
+	actually has the assembly code to 3 programs with the first example completed. You can
+	use that example to help you determine how to fill in the blanks for the 2nd and 3rd
+	programs.</p>
+
+	<p>You will use handin to submit the following components of your lab:</p>
+
+	<ul>
+		<li>my_loop.m</li>
+
+		<li>worksheet_a.txt</li>
+
+		<li>worksheet_b.txt</li>
+	</ul>
+
+	<hr />
+
+</body>
+</html>

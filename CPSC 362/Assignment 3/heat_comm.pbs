@@ -1,0 +1,27 @@
+#!/bin/bash
+#PBS -N Asg_3
+#PBS -l select=1:ncpus=16:mpiprocs=16:mem=8gb:interconnect=1g,walltime=02:00:00
+#PBS -j oe
+#PBS -M jhull@clemson.edu
+#PBS -m bea
+
+source /etc/profile.d/modules.sh
+module purge
+module add gcc/4.8.1 mpich2/1.4-eth
+
+cd $PBS_O_WORKDIR
+
+export MX_RCACHE=0
+
+mpicc -Wall -g -o heat_mpi_comm.exe -lm heat_mpi_comm.c
+
+echo -e "~~~~~Starting n=1~~~~~"
+mpiexec -n 1 ./heat_mpi_comm.exe 50000 1000 
+echo -e "~~~~~Starting n=4~~~~~"
+mpiexec -n 2 ./heat_mpi_comm.exe 50000 1000 
+echo -e "~~~~~Starting n=9~~~~~"
+mpiexec -n 4 ./heat_mpi_comm.exe 50000 1000 
+echo -e "~~~~~Starting n=16~~~~~"
+mpiexec -n 8 ./heat_mpi_comm.exe 50000 1000 
+echo -e "~~~~~Starting n=25~~~~~"
+mpiexec -n 16 ./heat_mpi_comm.exe 50000 1000 

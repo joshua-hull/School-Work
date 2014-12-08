@@ -1,0 +1,150 @@
+./lab12
+Sorted list of numbers (ascending order):
+1:1
+2:1
+3:5
+4:2
+5:3
+6:1
+7:1
+8:1
+9:2
+10:1
+20:1
+22:1
+25:1
+33:2
+44:5
+66:1
+77:1
+88:1
+89:2
+99:5
+100:2
+101:2
+125:1
+136:2
+150:2
+189:2
+200:10
+201:1
+202:1
+203:1
+204:1
+205:1
+225:1
+250:2
+300:2
+325:1
+350:2
+400:2
+425:1
+432:1
+444:2
+450:2
+486:2
+496:1
+497:1
+498:1
+499:1
+500:2
+
+Sorted list of numbers (descending order):
+500:2
+499:1
+498:1
+497:1
+496:1
+486:2
+450:2
+444:2
+432:1
+425:1
+400:2
+350:2
+325:1
+300:2
+250:2
+225:1
+205:1
+204:1
+203:1
+202:1
+201:1
+200:10
+189:2
+150:2
+136:2
+125:1
+101:2
+100:2
+99:5
+89:2
+88:1
+77:1
+66:1
+44:5
+33:2
+25:1
+22:1
+20:1
+10:1
+9:2
+8:1
+7:1
+6:1
+5:3
+4:2
+3:5
+2:1
+1:1
+
+Deleting Tree:
+Deleting 20: count 1
+Deleting 3: count 5
+Deleting 2: count 1
+Deleting 1: count 1
+Deleting 4: count 2
+Deleting 9: count 2
+Deleting 5: count 3
+Deleting 8: count 1
+Deleting 7: count 1
+Deleting 6: count 1
+Deleting 10: count 1
+Deleting 44: count 5
+Deleting 22: count 1
+Deleting 33: count 2
+Deleting 25: count 1
+Deleting 99: count 5
+Deleting 88: count 1
+Deleting 77: count 1
+Deleting 66: count 1
+Deleting 89: count 2
+Deleting 200: count 10
+Deleting 101: count 2
+Deleting 100: count 2
+Deleting 136: count 2
+Deleting 125: count 1
+Deleting 189: count 2
+Deleting 150: count 2
+Deleting 432: count 1
+Deleting 300: count 2
+Deleting 250: count 2
+Deleting 225: count 1
+Deleting 201: count 1
+Deleting 202: count 1
+Deleting 203: count 1
+Deleting 204: count 1
+Deleting 205: count 1
+Deleting 400: count 2
+Deleting 350: count 2
+Deleting 325: count 1
+Deleting 425: count 1
+Deleting 500: count 2
+Deleting 486: count 2
+Deleting 444: count 2
+Deleting 450: count 2
+Deleting 499: count 1
+Deleting 498: count 1
+Deleting 497: count 1
+Deleting 496: count 1

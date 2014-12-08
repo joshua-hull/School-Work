@@ -1,0 +1,476 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"twi",
+				"twitter_messages"
+			],
+			[
+				"tw",
+				"twitter_messages"
+			],
+			[
+				"oau",
+				"oauth_token_secret"
+			],
+			[
+				"delete",
+				"deletehash"
+			],
+			[
+				"result",
+				"result_id"
+			],
+			[
+				"al",
+				"album_id"
+			],
+			[
+				"imgur",
+				"imgur_options"
+			],
+			[
+				"ex",
+				"exit"
+			],
+			[
+				"a",
+				"album"
+			],
+			[
+				"im",
+				"imgur_options"
+			],
+			[
+				"name",
+				"name"
+			],
+			[
+				"file",
+				"filename"
+			],
+			[
+				"for",
+				"foreach	foreach …"
+			],
+			[
+				"opt",
+				"options"
+			],
+			[
+				"op",
+				"options"
+			],
+			[
+				"sle",
+				"sleep_time"
+			],
+			[
+				"sl",
+				"sleep_time"
+			],
+			[
+				"sn",
+				"snapchat"
+			],
+			[
+				"sna",
+				"snap"
+			],
+			[
+				"snap",
+				"snapchat"
+			],
+			[
+				"array",
+				"array"
+			],
+			[
+				"date_def",
+				"date_default_timezone_set"
+			],
+			[
+				"fil",
+				"filename"
+			],
+			[
+				"t",
+				"tv0"
+			],
+			[
+				"tv",
+				"tv0b"
+			],
+			[
+				"w",
+				"w1red"
+			],
+			[
+				"user",
+				"user_agent"
+			],
+			[
+				"ver",
+				"version_string"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"git commit",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add..."
+			],
+			[
+				"GIT DIFF",
+				"Git: Diff All"
+			],
+			[
+				"git commi",
+				"Git: Commit"
+			],
+			[
+				"git pu",
+				"Git: Push"
+			],
+			[
+				"git log",
+				"Git: Log All"
+			],
+			[
+				"git grap",
+				"Git: Graph All"
+			],
+			[
+				"git comm",
+				"Git: Commit"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"spell",
+				"Google Spell Check"
+			],
+			[
+				"SPELL",
+				"Google Spell Check"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"git gra",
+				"Git: Graph All"
+			],
+			[
+				"sftp down",
+				"SFTP: Download File"
+			],
+			[
+				"sftp ",
+				"SFTP: Browse Server…"
+			],
+			[
+				"sftp do",
+				"SFTP: Download File"
+			],
+			[
+				"sftp",
+				"Preferences: SFTP Settings"
+			],
+			[
+				"Project",
+				"Project: Add Folder"
+			],
+			[
+				"snippet",
+				"Snippet: For Loop"
+			],
+			[
+				"snipp",
+				"Snippet: main()"
+			],
+			[
+				"bui",
+				"Build: Build"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"Hex",
+				"Hex Viewer: Toggle Hex View"
+			],
+			[
+				"bit",
+				"Hex Viewer: Set Bits Per Group"
+			],
+			[
+				"Bit",
+				"Hex Viewer: Set Bits Per Group"
+			],
+			[
+				"Byt",
+				"Hex Viewer: Set Bytes Per Line"
+			],
+			[
+				"hex",
+				"Hex Viewer: Show Hex Edit Panel"
+			],
+			[
+				"package list",
+				"Package Control: List Packages"
+			],
+			[
+				"package remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"package",
+				"Package Control: Remove Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"git blame",
+				"Git: Blame"
+			],
+			[
+				"git ",
+				"Git: Graph All"
+			],
+			[
+				"git log all",
+				"Git: Log All"
+			],
+			[
+				"git his",
+				"Git: Commit history"
+			],
+			[
+				"git bran",
+				"Git: Change Branch"
+			],
+			[
+				"git",
+				"Git: Status"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/joshua/Coding/echochat/twitter/twitteroauth/twitteroauth.php",
+		"/home/joshua/Coding/echochat/imgur/classes/OAuthException.php",
+		"/home/joshua/Coding/echochat/twitter/twitteroauth/OAuth.php",
+		"/home/joshua/Coding/echochat/imgur/Imgur.php",
+		"/home/joshua/Coding/echochat/snapchat/src/snapchat.php",
+		"/home/joshua/Coding/echochat/echochat.log",
+		"/home/joshua/Coding/echochat/log_config.xml",
+		"/home/joshua/Coding/echochat/echochat.php",
+		"/home/joshua/Coding/echochat/snapwatcher.php",
+		"/home/joshua/Coding/snapwatcher/snapwatcher.log",
+		"/home/joshua/Coding/School/cpsc352/SDE2/readme.txt",
+		"/home/joshua/Coding/School/cpsc352/SDE2/test1.caml",
+		"/home/joshua/Coding/School/cpsc231/lab8/array_average.s",
+		"/home/joshua/Coding/School/cpsc231/lab8/lab8.sublime-build",
+		"/tmp/sublime-sftp-browse-1381945244/School of Computing/home/jhull/cpsc231/lab7/array_simple.s",
+		"/home/joshua/.config/sublime-text-2/Packages/User/Preferences.sublime-settings",
+		"/home/joshua/Coding/School/cpsc231/lab8/sftp-config.json",
+		"/home/joshua/.config/sublime-text-2/Packages/SFTP/SFTP.sublime-settings",
+		"/tmp/sublime-sftp-browse-1381944911/School of Computing/home/jhull/cpsc231/program2/multiply.class",
+		"/home/joshua/.config/sublime-text-2/Packages/User/sftp_servers/School of Computing",
+		"/home/joshua/testing.js",
+		"/home/joshua/ga.cpp",
+		"/home/joshua/tmp.karl",
+		"/home/joshua/tmp.txt",
+		"/home/joshua/.config/sublime-text-2/Packages/User/hex_viewer.sublime-settings",
+		"/home/joshua/tmp.hex",
+		"/home/joshua/.config/sublime-text-2/Packages/Package Control/Package Control.sublime-settings",
+		"/home/joshua/.config/sublime-text-2/Packages/User/Package Control.sublime-settings",
+		"/home/joshua/.config/sublime-text-2/Packages/User/Git.sublime-settings",
+		"/home/joshua/Coding/Reddit-Image-Scraper/.directory",
+		"/home/joshua/Coding/School/cpsc352/SDE2/sde2.caml",
+		"/home/joshua/untitled.c"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"consumer_key",
+			"imgur",
+			"album",
+			"result",
+			"vardump",
+			"imgur",
+			"	$",
+			" $",
+			"$snap_type",
+			"fatal",
+			"error",
+			"1",
+			"syntax",
+			"error",
+			"[",
+			"dl"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.git":
+	{
+		"height": 100.0
+	},
+	"output.hex_viewer_inspector":
+	{
+		"height": 100.0
+	},
+	"output.sftp":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/home/joshua/Coding/School/cpsc352/SDE2/sde2.caml"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 232.0,
+	"status_bar_visible": true
+}

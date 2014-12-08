@@ -1,0 +1,35 @@
+FORWARD BEFORE DELETES:
+aword: 2
+bword: 1
+dword: 2
+eword: 2
+gword: 4
+mword: 1
+pword: 2
+qword: 1
+sword: 2
+tword: 1
+zword: 1
+
+REVERSE BEFORE DELETES:
+zword: 1
+tword: 1
+sword: 2
+qword: 1
+pword: 2
+mword: 1
+gword: 4
+eword: 2
+dword: 2
+bword: 1
+aword: 2
+
+FORWARD AFTER DELETES:
+dword: 2
+mword: 1
+qword: 1
+
+REVERSE AFTER DELETES:
+qword: 1
+mword: 1
+dword: 2

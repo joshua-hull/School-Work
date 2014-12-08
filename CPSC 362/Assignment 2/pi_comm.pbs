@@ -1,0 +1,33 @@
+#!/bin/bash
+#PBS -N Asg_2_Cm
+#PBS -l select=1:ncpus=1:mpiprocs=100:mem=2gb:interconnect=1g,walltime=00:30:00
+#PBS -j oe
+#PBS -M jhull@clemson.edu
+#PBS -m bea
+
+source /etc/profile.d/modules.sh
+module purge
+module add gcc/4.8.1 mpich2/1.4-eth
+
+cd $PBS_O_WORKDIR
+
+export MX_RCACHE=0
+
+mpicc -Wall -g -o pi_mpi_comm.exe -lm pi_mpi_comm.c
+
+echo -e "~~~~~Starting n=1~~~~~"
+mpiexec -n 1 ./pi_mpi_comm.exe 1000000000
+echo -e "~~~~~Starting n=4~~~~~"
+mpiexec -n 4 ./pi_mpi_comm.exe 1000000000
+echo -e "~~~~~Starting n=9~~~~~"
+mpiexec -n 9 ./pi_mpi_comm.exe 1000000000
+echo -e "~~~~~Starting n=16~~~~~"
+mpiexec -n 16 ./pi_mpi_comm.exe 1000000000 
+echo -e "~~~~~Starting n=25~~~~~"
+mpiexec -n 25 ./pi_mpi_comm.exe 1000000000
+echo -e "~~~~~Starting n=36~~~~~"
+mpiexec -n 36 ./pi_mpi_comm.exe 1000000000 
+echo -e "~~~~~Starting n=49~~~~~"
+mpiexec -n 49 ./pi_mpi_comm.exe 1000000000
+echo -e "~~~~~Starting n=64~~~~~"
+mpiexec -n 64 ./pi_mpi_comm.exe 1000000000 

@@ -1,0 +1,15 @@
+1.)
+    a.) It is the address of the struct dot.
+    b.) To refrence back to the dot struct.
+2.)
+    local.x = x_arg;
+    local.y = y_arg;
+3.) 
+    zero and zero.
+4.) 
+    local.x = 0;
+    local.y = 0;
+5.) 
+    It returns the stack pointer. This is the address that represents the dot
+    struct.
+

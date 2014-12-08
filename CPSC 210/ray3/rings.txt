@@ -1,0 +1,53 @@
+window
+   name view1
+   windowwidth 8
+   windowheight 6
+   columns 400
+   viewpoint 0 0 5
+   ambient 4 4 4 ;
+
+sphere  name ball1 
+   color white
+   diffuse 1 1 1
+   center 0 0 -4 
+   radius 2 ;
+
+pointlight name left
+   center -3 0 -3
+   color green
+   brightness 8;
+
+pointlight name right
+   center 3 0 -3
+   color red
+   brightness 8;
+
+pointlight name top
+   center 1 4 -4
+   color white
+   brightness 8;
+
+plane name back
+   point 0 0 -10
+   orient1 1 0 0
+   orient2 0 1 -1
+   color white
+   diffuse 1 1 1 ;
+
+ring name ring1
+   color yellow
+   point 0 0 -4
+   radius1 2.5
+   radius2 3
+   orient1 1 1 1
+   orient2 1 0 1
+   diffuse 1 1 1 ;
+
+ring name ring2
+   color yellow
+   point 0 0 -4
+   radius1 3.5
+   radius2 4.0
+   orient1 1 1 1
+   orient2 1 0 1
+   diffuse 1 1 1 ;

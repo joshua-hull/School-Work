@@ -1,0 +1,206 @@
+/* Joshua Hull (jhull@clemson.edu)
+ * CPSC 212: Lab 9: TSP
+ */
+
+#include <cmath>
+#include <string>
+#include <stdlib.h>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <algorithm>
+
+using namespace std;
+
+class city
+{
+    private:
+        int m_x;
+        int m_y;
+    public:
+        city(int n, int x, int y);
+        int m_n;
+        double getDistance(city otherCity);
+};
+
+city::city(int n, int x, int y)
+{
+    m_n = n;
+    m_x = x;
+    m_y = y;
+}
+
+double city::getDistance(city otherCity)
+{
+    return sqrt(pow(otherCity.m_x - m_x, 2) + pow(otherCity.m_y - m_y, 2));
+}
+
+class trip
+{
+    private:
+        city* cities;
+        int numCities;
+    public:
+        trip(int n);
+        ~trip();
+        string getPath();
+        double getTotalDistance();
+        void print(double time);
+        void add(int i, city c);
+};
+
+trip::trip(int n)
+{
+    cities = (city*) malloc(n * sizeof(city));
+    numCities = n;
+}
+
+trip::~trip()
+{
+    free(cities);
+}
+
+string trip::getPath()
+{
+    ostringstream pathName;
+
+    for(int i = 0; i < numCities; i++) {
+        pathName << cities[i].m_n << " ";
+    }
+
+    return pathName.str();
+}
+
+double trip::getTotalDistance()
+{
+    double runningTotal = 0.0;
+
+    for (int i = 0; i < numCities - 1; i++) {
+        runningTotal = runningTotal + cities[i].getDistance(cities[i + 1]);
+    }
+
+    runningTotal = runningTotal + cities[numCities].getDistance(cities[0]);
+    return runningTotal;
+}
+
+void trip::print(double time)
+{
+    cout << "Tour:\t" << getPath() << endl;
+    cout << "Cost:\t" << getTotalDistance() << endl;
+    cout << "Limit:\t" << time << endl;
+}
+
+void trip::add(int i, city c)
+{
+    if(i >= numCities)
+        return;
+
+    cities[i] = c;
+}
+
+int main(int argc, char* argv[])
+{
+    // Time related variables.
+    clock_t start = clock();
+    double duration;
+    double timeLimit;
+
+    // Stringbuilding varables.
+    string fileLine;
+    string stringN;
+    string cityName;
+    string tmp;
+
+    // Citybuilding and journeybuilding variables.
+    int cityX;
+    int cityY;
+    city* cities;
+    trip* bestJourney;
+
+    int N; // How many cities we have to travel through.
+    int* permiutation;
+
+    if (argc != 3) {
+        cout << "Usage: " << argv[0] << " inputfile seconds" << endl;
+        return 0;
+    }
+
+    ifstream inputFile(argv[1]);
+    timeLimit = strtod(argv[2], NULL);
+
+    if(!inputFile.is_open()) {
+        cout << "Unable to open input file: " << argv[1] << endl;
+        return 0;
+    }
+
+    // Get the number of cities to travel through from our input file.
+    getline(inputFile, fileLine);
+    stringstream lineStream(fileLine);
+    lineStream >> stringN;
+    N = atoi(stringN.c_str());
+
+    /* Make a working trip and a best trip based on this number.
+     * Also make the permiutations array and an array of cities.
+     */
+    trip journey(N);
+    bestJourney = new trip(N);
+    permiutation = (int*) malloc(N * sizeof(int));
+    cities = (city*) malloc(N * sizeof(city));
+
+    /* Populate the array of cities with info from the input file
+     * as well as the permiutation array.
+     */
+    for(int i = 0; i < N; i++) {
+        permiutation[i] = i;
+
+        getline(inputFile, fileLine);
+        stringstream lineStream(fileLine);
+        lineStream >> cityName;
+
+        lineStream >> tmp;
+        cityX = atoi(tmp.c_str());
+
+        lineStream >> tmp;
+        cityY = atoi(tmp.c_str());
+
+        city tmpCity(atoi(cityName.c_str()), cityX, cityY);
+        cities[i] = tmpCity;
+
+        /* Use the order of te input file as a basis for the best journey.
+         * probably wrong but it's a starting point.
+         */
+        bestJourney->add(i, tmpCity);
+    }
+
+    // All the examples on permiutations I found had this.
+    sort(permiutation, permiutation + N);
+
+    do {
+        for (int i = 0; i < N; i++) {
+            /* In our working journey add the city at an index determined by
+             * the permiutation array.
+             */
+            journey.add(i, cities[permiutation[i]]);
+        }
+
+        /* If this journey is better then the current best then have the best
+         * reflect this new better one.
+         */
+        if(journey.getTotalDistance() < bestJourney->getTotalDistance()) {
+            bestJourney = new trip(N);
+
+            for (int i = 0; i < N; i++) {
+                bestJourney->add(i, cities[permiutation[i]]);
+            }
+        }
+
+        // Calculate how long we've been working in seconds.
+        duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+    } while(next_permutation(permiutation, permiutation + N) && duration < timeLimit);
+
+    // Repate the whole process until either we've done all possible trips or we've run out of time.
+
+    // Print the best journey and exit.
+    bestJourney->print(timeLimit);
+    return 1;
+}

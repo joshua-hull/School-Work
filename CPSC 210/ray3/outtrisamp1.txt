@@ -1,0 +1,136 @@
+
+Type: window
+   Name: view1
+   Pixel Width:        400   
+   World Width         6.0   
+   World Height        4.0   
+   viewPoint           0.0   0.0   5.0    
+   ambient intensity:  7.0   7.0   7.0   
+   Pixel Height:       266   
+
+DUMP OF SCENE OBJECTS:
+
+Type: triangle
+   Name: tri1
+   color:           255        0        0
+   diffuse:      0.0000   0.0000   0.0000
+   reflective:   0.0000   0.0000   0.0000
+   point:       -1.4000  -1.4000  -4.0000
+   orient1:      1.0000   0.0000   0.0000
+   orient2:      1.0000   1.7321   0.0000
+   normal:       0.0000   0.0000   1.0000
+   length1:      2.0000
+   length2:      2.0000
+   Edge 0:
+      point:         -1.4000  -1.4000  -4.0000
+      edge:           1.0000   0.0000   0.0000
+   Edge 1:
+      point:          0.6000  -1.4000  -4.0000
+      edge:          -0.5000   0.8660   0.0000
+   Edge 2:
+      point:         -0.4000   0.3321  -4.0000
+      edge:          -0.5000  -0.8660  -0.0000
+
+Type: triangle
+   Name: tri2
+   color:           255      255        0
+   diffuse:      0.0000   0.0000   0.0000
+   reflective:   0.0000   0.0000   0.0000
+   point:        1.0000   0.0000 -10.0000
+   orient1:     -1.0000   0.0000   3.0000
+   orient2:      0.0000   1.0000   0.0000
+   normal:      -0.9487   0.0000  -0.3162
+   length1:     10.0000
+   length2:      3.0000
+   Edge 0:
+      point:          1.0000   0.0000 -10.0000
+      edge:          -0.3162   0.0000   0.9487
+   Edge 1:
+      point:         -2.1623   0.0000  -0.5132
+      edge:           0.3029   0.2873  -0.9087
+   Edge 2:
+      point:          1.0000   3.0000 -10.0000
+      edge:          -0.0000  -1.0000  -0.0000
+
+Type: sphere
+   Name: pierced
+   color:             0        0      255
+   diffuse:      0.0000   0.0000   0.0000
+   reflective:   0.0000   0.0000   0.0000
+   center:      -1.5000   0.0000  -3.0000
+   radius:       1.0000
+
+Type: triangle
+   Name: tri3
+   color:           128        0      255
+   diffuse:      0.0000   0.0000   0.0000
+   reflective:   0.0000   0.0000   0.0000
+   point:        2.0000  -2.0000 -40.0000
+   orient1:      0.0000   0.0000   1.0000
+   orient2:     -1.0000   0.0000   0.0000
+   normal:       0.0000  -1.0000   0.0000
+   length1:     38.0000
+   length2:      6.0000
+   Edge 0:
+      point:          2.0000  -2.0000 -40.0000
+      edge:           0.0000   0.0000   1.0000
+   Edge 1:
+      point:          2.0000  -2.0000  -2.0000
+      edge:          -0.1560   0.0000  -0.9878
+   Edge 2:
+      point:         -4.0000  -2.0000 -40.0000
+      edge:           1.0000  -0.0000  -0.0000
+
+Type: triangle
+   Name: tri4
+   color:           250      120      120
+   diffuse:      0.0000   0.0000   0.0000
+   reflective:   0.0000   0.0000   0.0000
+   point:        2.0000  -2.0000 -40.0000
+   orient1:      0.0000   0.0000   1.0000
+   orient2:      1.0000   0.0000   0.0000
+   normal:       0.0000   1.0000   0.0000
+   length1:     38.0000
+   length2:      6.0000
+   Edge 0:
+      point:          2.0000  -2.0000 -40.0000
+      edge:           0.0000   0.0000   1.0000
+   Edge 1:
+      point:          2.0000  -2.0000  -2.0000
+      edge:           0.1560   0.0000  -0.9878
+   Edge 2:
+      point:          8.0000  -2.0000 -40.0000
+      edge:          -1.0000  -0.0000  -0.0000
+
+Type: triangle
+   Name: tri5
+   color:           255        0      128
+   diffuse:      0.0000   0.0000   0.0000
+   reflective:   0.0000   0.0000   0.0000
+   point:        2.0000   0.0000  -3.0000
+   orient1:      1.0000   0.5000   0.0000
+   orient2:      1.0000   2.2321   0.0000
+   normal:       0.0000   0.0000   1.0000
+   length1:      2.0000
+   length2:      2.0000
+   Edge 0:
+      point:          2.0000   0.0000  -3.0000
+      edge:           0.8944   0.4472   0.0000
+   Edge 1:
+      point:          3.7889   0.8944  -3.0000
+      edge:          -0.7220   0.6919   0.0000
+   Edge 2:
+      point:          2.8177   1.8252  -3.0000
+      edge:          -0.4089  -0.9126  -0.0000
+
+Type: plane
+   Name: back
+   color:           255      255      255
+   diffuse:      0.0000   0.0000   0.0000
+   reflective:   0.0000   0.0000   0.0000
+   point:        0.0000   0.0000 -50.0000
+   orient1:      1.0000   0.0000   0.0000
+   orient2:      0.0000   1.0000   0.0000
+   normal:       0.0000   0.0000   1.0000
+
+DUMP OF LIGHT LIST:

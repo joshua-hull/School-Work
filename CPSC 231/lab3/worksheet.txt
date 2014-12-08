@@ -1,0 +1,78 @@
+1. Where is the loop located in the program? That is, what is the address of the first and last instruction in the loop (not necessarily the same as the entire program)?
+	
+	
+
+2. Is the loop of the "while(test)-do" form or "repeat-until(test)" form?
+
+Repeat-until(test).
+
+3. Do the values of 'x' increase or decrease?
+
+'x' increases.
+
+4. At what address do you place a breakpoint in order to observe the new value of 'y' that is calculated on each iteration of the loop? Use the form "b *ADDRESS". NOTE: This is the point at which the new value of 'y' is also in its appropriate register. Use the gdb command "print $r0" to print register values (where r0 can be any register name) and ensure you have found the correct line.
+
+0x894c
+
+5. What two gdb commands do you enter so that at each step, gdb will always print both the decimal and hexadecimal form of the value 'y'?
+
+display /d $r3
+display /x $r3
+
+6. The loop as written only calculates the value of y for the values of x between 0 and 9. It should calculate the value of y for all values of x between 0 and 10. Why does the loop stop at 9 and what change would fix it?
+
+It branches on less then when it should use less then or equal.
+
+
+7. Correct the code in "loop.m" and re-run the loop. Run the program and fill out the following table:
+
+register        register                register
+   x               y                       y
+(counter)       (decimal)               (hexadecimal)
+
+   0            7_________              0x7_______
+
+   1            -1________              0xffffffff
+
+   2            -7________              0xfffffff9
+
+   3            -11_______              0xfffffff5
+
+   4            -13_______              0xfffffff3
+
+   5            -13_______              0xfffffff3
+
+   6            -11_______              0xfffffff5
+
+   7            -7________              0xfffffff9
+
+   8            -1________              0xffffffff
+
+   9            7_________              0x7_______
+
+  10            17________              0x11______
+  
+
+=====================
+ Octal Dump Questions
+=====================
+
+8. Describe what you see in the source file.
+
+The ASCII character codes that represent the characters in the source file.
+
+9. Describe what you see in the executable file.
+
+The value of the opcodes, memory locations, and register locations that
+are used in used by the processor to execute the instructions.
+
+BONUS:
+
+10. Use the directory list command (ls -l) to determine the size of each file. How do the files compare in size? Which is bigger, and why?
+
+Source: 1008 bytes.
+Executable: 452294 bytes.
+The executable is approximately 450 times the size of the source file. This is
+because in the source file each character only takes up seven bits. In the
+executable each instruction, memory location, value, register number, etcetera
+takes up an entire 32 bit word. 

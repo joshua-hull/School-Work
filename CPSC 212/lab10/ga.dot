@@ -1,0 +1,339 @@
+digraph g {
+
+	26 -> 4 [penwidth=3, color=black]
+	4 -> 10 [penwidth=3, color=black]
+	10 -> 35 [penwidth=3, color=black]
+	35 -> 45 [penwidth=3, color=black]
+	45 -> 30 [penwidth=3, color=black]
+	30 -> 6 [penwidth=3, color=black]
+	6 -> 7 [penwidth=3, color=black]
+	7 -> 9 [penwidth=3, color=black]
+	9 -> 8 [penwidth=3, color=black]
+	8 -> 40 [penwidth=3, color=black]
+	40 -> 11 [penwidth=3, color=black]
+	11 -> 12 [penwidth=3, color=black]
+	12 -> 23 [penwidth=3, color=black]
+	23 -> 19 [penwidth=3, color=black]
+	19 -> 37 [penwidth=3, color=black]
+	37 -> 43 [penwidth=3, color=black]
+	43 -> 17 [penwidth=3, color=black]
+	17 -> 44 [penwidth=3, color=black]
+	44 -> 38 [penwidth=3, color=black]
+	38 -> 20 [penwidth=3, color=black]
+	20 -> 21 [penwidth=3, color=black]
+	21 -> 39 [penwidth=3, color=black]
+	39 -> 42 [penwidth=3, color=black]
+	42 -> 24 [penwidth=3, color=black]
+	24 -> 14 [penwidth=3, color=black]
+	14 -> 25 [penwidth=3, color=black]
+	25 -> 15 [penwidth=3, color=black]
+	15 -> 18 [penwidth=3, color=black]
+	18 -> 31 [penwidth=3, color=black]
+	31 -> 1 [penwidth=3, color=black]
+	1 -> 22 [penwidth=3, color=black]
+	22 -> 16 [penwidth=3, color=black]
+	16 -> 34 [penwidth=3, color=black]
+	34 -> 3 [penwidth=3, color=black]
+	3 -> 29 [penwidth=3, color=black]
+	29 -> 41 [penwidth=3, color=black]
+	41 -> 27 [penwidth=3, color=black]
+	27 -> 28 [penwidth=3, color=black]
+	28 -> 36 [penwidth=3, color=black]
+	36 -> 46 [penwidth=3, color=black]
+	46 -> 33 [penwidth=3, color=black]
+	33 -> 47 [penwidth=3, color=black]
+	47 -> 13 [penwidth=3, color=black]
+	13 -> 5 [penwidth=3, color=black]
+	5 -> 32 [penwidth=3, color=black]
+	32 -> 0 [penwidth=3, color=black]
+	0 -> 2 [penwidth=3, color=black]
+	2 -> 26
+	26 [
+		label = 26
+		pos = "675,1006!"
+		style=filled
+		fillcolor=black
+	]
+	4 [
+		label = 4
+		pos = "401,841!"
+		style=filled
+		fillcolor=black
+	]
+	10 [
+		label = 10
+		pos = "1112,2049!"
+		style=filled
+		fillcolor=black
+	]
+	35 [
+		label = 35
+		pos = "23,2216!"
+		style=filled
+		fillcolor=black
+	]
+	45 [
+		label = 45
+		pos = "10,2676!"
+		style=filled
+		fillcolor=black
+	]
+	30 [
+		label = 30
+		pos = "7352,4506!"
+		style=filled
+		fillcolor=black
+	]
+	6 [
+		label = 6
+		pos = "7608,4458!"
+		style=filled
+		fillcolor=black
+	]
+	7 [
+		label = 7
+		pos = "7573,3716!"
+		style=filled
+		fillcolor=black
+	]
+	9 [
+		label = 9
+		pos = "6898,1885!"
+		style=filled
+		fillcolor=black
+	]
+	8 [
+		label = 8
+		pos = "7265,1268!"
+		style=filled
+		fillcolor=black
+	]
+	40 [
+		label = 40
+		pos = "6271,2135!"
+		style=filled
+		fillcolor=black
+	]
+	11 [
+		label = 11
+		pos = "5468,2606!"
+		style=filled
+		fillcolor=black
+	]
+	12 [
+		label = 12
+		pos = "5989,2873!"
+		style=filled
+		fillcolor=black
+	]
+	23 [
+		label = 23
+		pos = "5199,2182!"
+		style=filled
+		fillcolor=black
+	]
+	19 [
+		label = 19
+		pos = "7732,4723!"
+		style=filled
+		fillcolor=black
+	]
+	37 [
+		label = 37
+		pos = "7762,4595!"
+		style=filled
+		fillcolor=black
+	]
+	43 [
+		label = 43
+		pos = "7280,4899!"
+		style=filled
+		fillcolor=black
+	]
+	17 [
+		label = 17
+		pos = "7611,5184!"
+		style=filled
+		fillcolor=black
+	]
+	44 [
+		label = 44
+		pos = "7509,3239!"
+		style=filled
+		fillcolor=black
+	]
+	38 [
+		label = 38
+		pos = "7392,2244!"
+		style=filled
+		fillcolor=black
+	]
+	20 [
+		label = 20
+		pos = "5900,3561!"
+		style=filled
+		fillcolor=black
+	]
+	21 [
+		label = 21
+		pos = "4483,3369!"
+		style=filled
+		fillcolor=black
+	]
+	39 [
+		label = 39
+		pos = "3484,2829!"
+		style=filled
+		fillcolor=black
+	]
+	42 [
+		label = 42
+		pos = "1916,1569!"
+		style=filled
+		fillcolor=black
+	]
+	24 [
+		label = 24
+		pos = "1633,2809!"
+		style=filled
+		fillcolor=black
+	]
+	14 [
+		label = 14
+		pos = "4612,2035!"
+		style=filled
+		fillcolor=black
+	]
+	25 [
+		label = 25
+		pos = "4307,2322!"
+		style=filled
+		fillcolor=black
+	]
+	15 [
+		label = 15
+		pos = "6347,2683!"
+		style=filled
+		fillcolor=black
+	]
+	18 [
+		label = 18
+		pos = "7462,3590!"
+		style=filled
+		fillcolor=black
+	]
+	31 [
+		label = 31
+		pos = "7545,2801!"
+		style=filled
+		fillcolor=black
+	]
+	1 [
+		label = 1
+		pos = "6734,1453!"
+		style=filled
+		fillcolor=black
+	]
+	22 [
+		label = 22
+		pos = "6101,1110!"
+		style=filled
+		fillcolor=black
+	]
+	16 [
+		label = 16
+		pos = "6107,669!"
+		style=filled
+		fillcolor=black
+	]
+	34 [
+		label = 34
+		pos = "4608,1198!"
+		style=filled
+		fillcolor=black
+	]
+	3 [
+		label = 3
+		pos = "5530,1424!"
+		style=filled
+		fillcolor=black
+	]
+	29 [
+		label = 29
+		pos = "3177,756!"
+		style=filled
+		fillcolor=black
+	]
+	41 [
+		label = 41
+		pos = "4985,140!"
+		style=filled
+		fillcolor=black
+	]
+	27 [
+		label = 27
+		pos = "7555,4819!"
+		style=filled
+		fillcolor=black
+	]
+	28 [
+		label = 28
+		pos = "7541,3981!"
+		style=filled
+		fillcolor=black
+	]
+	36 [
+		label = 36
+		pos = "7248,3779!"
+		style=filled
+		fillcolor=black
+	]
+	46 [
+		label = 46
+		pos = "6807,2993!"
+		style=filled
+		fillcolor=black
+	]
+	33 [
+		label = 33
+		pos = "6426,3173!"
+		style=filled
+		fillcolor=black
+	]
+	47 [
+		label = 47
+		pos = "5185,3258!"
+		style=filled
+		fillcolor=black
+	]
+	13 [
+		label = 13
+		pos = "4706,2674!"
+		style=filled
+		fillcolor=black
+	]
+	5 [
+		label = 5
+		pos = "3082,1644!"
+		style=filled
+		fillcolor=black
+	]
+	32 [
+		label = 32
+		pos = "3245,3305!"
+		style=filled
+		fillcolor=black
+	]
+	0 [
+		label = 0
+		pos = "3023,1942!"
+		style=filled
+		fillcolor=black
+	]
+	2 [
+		label = 2
+		pos = "2233,10!"
+		style=filled
+		fillcolor=black
+	]
+}

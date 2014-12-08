@@ -1,0 +1,16 @@
+/*
+ * CP SC 212 Lab 8: NQueens
+ * Joshua Hull (jhull@clemson.edu)
+ */
+using namespace std;
+
+class Queen {
+public:
+    int m_row;
+    int m_col;
+    void place(int row, int col);
+    bool isSafe(Queen* q,int numQueens);
+};
+
+bool placeQueen(Queen* royals);
+void printQueens(Queen* q);

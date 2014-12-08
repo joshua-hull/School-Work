@@ -1,0 +1,81 @@
+// English
+Our Father in heaven,
+hallowed be your name.
+Your kingdom come,
+your will be done,
+on earth, as it is in heaven.
+Give us this day our daily bread,
+and forgive us our debts,
+as we also have forgiven our debtors.
+And lead us not into temptation,
+but deliver us from evil.
+// End
+// French
+Notre Père dans les cieux,
+ton nom soit sanctifié.
+Que ton règne vienne,
+ta volonté soit faite,
+sur la terre comme au ciel.
+Donne-nous aujourd'hui notre pain quotidien,
+Pardonne-nous nos offenses,
+comme nous aussi avons remis à nos débiteurs.
+Et ne nous soumets pas à la tentation,
+mais délivre-nous du mal.
+// End
+// German
+Unser Vater im Himmel,
+geheiligt werde dein Name.
+Dein Reich komme,
+Dein Wille geschehe,
+auf der Erde, wie es im Himmel ist.
+Gib uns heute unser tägliches Brot,
+und vergib uns unsere Schuld,
+wie auch wir vergeben unseren Schuldigern.
+Und führe uns nicht in Versuchung,
+sondern erlöse uns von dem Bösen.
+// End
+// Italian
+Padre nostro che è nei cieli,
+sia santificato il tuo nome.
+Venga il tuo regno,
+fatta la tua volontà,
+sulla terra, come in cielo.
+Dacci oggi il nostro pane quotidiano,
+e rimetti a noi i nostri debiti,
+come noi li rimettiamo ai nostri debitori.
+E non ci indurre in tentazione,
+ma liberaci dal male.
+// End
+// Portugese
+Nosso Pai no céu,
+santificado seja o teu nome.
+Venha o teu reino,
+o que será feito,
+na terra, como no céu.
+Dá-nos hoje o nosso pão de cada dia,
+e perdoa-nos as nossas dívidas,
+assim como nós temos perdoado aos nossos devedores.
+E não nos deixeis cair em tentação,
+mas livra-nos do mal.
+// End
+// English01
+This is an english paragraph. It is very long. It will need to be translated into other languages. Thank you google for doing this for me.
+// End
+// Portugese02
+Este é um parágrafo Inglês. É muito longo. Ela terá de ser traduzida para outras línguas. Obrigado google para fazer isso por mim.
+// End
+// Italian03
+Si tratta di un punto inglese. È molto lungo. Essa dovrà essere tradotto in altre lingue. Grazie Google per fare questo per me.
+// End
+// Icelandic04
+Faðir okkar á himnum,
+Heilagt veri nafn þitt.
+Til komi þitt ríki,
+þinn vilji,
+svo á jörðu sem á himni.
+Gef oss í dag vort daglegt brauð,
+og fyrirgef oss vorar skuldir,
+svo sem vér og fyrirgefum vorum skuldunautum.
+Og eigi leið þú oss í freistni,
+heldur frelsa oss frá illu.
+// End
